@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Data.SqlClient;
 
 /// <summary>
 /// Summary description for LoggedUser
@@ -41,14 +42,34 @@ public class LoggedUser : User
 
     public Boolean checkLogin(String loginName, String password)
     {
-        // TODO
-        throw new NotImplementedException();
+        DbConnection db = new DbConnection();
+        SqlConnection connection = db.OpenConnection();
+        String query = "SELECT login FROM LoggedUser WHERE login = @login AND password = @password;";
+        SqlCommand command = new SqlCommand(query, connection);
+        command.Parameters.AddWithValue("@login", loginName);
+        command.Parameters.AddWithValue("@password", password);
+        Object id = command.ExecuteScalar();
+        if (id == null)
+            return false;
+        else
+            return true;
     }
     
     public Boolean SignUp(String loginName, String name, String email, String password)
     {
-        // TODO
-        throw new NotImplementedException();
+        DbConnection db = new DbConnection();
+        SqlConnection connection = db.OpenConnection();
+        String query = "INSERT INTO LoggedUser (login, name, email, password) VALUES (@login, @name, @email, @password);";
+        SqlCommand command = new SqlCommand(query, connection);
+        command.Parameters.AddWithValue("@login", loginName);
+        command.Parameters.AddWithValue("@name", name);
+        command.Parameters.AddWithValue("@email", email);
+        command.Parameters.AddWithValue("@password", password);
+        int row = command.ExecuteNonQuery();
+        if (row == 0)
+            return false;
+        else
+            return true;
     }
 
     public Boolean messageHost(String loginName, Host host, String message) 

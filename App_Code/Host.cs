@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Data.SqlClient;
 
 /// <summary>
 /// Summary description for Host
@@ -24,31 +25,58 @@ public class Host : User
     public String name { get; set; }
     public String email { get; set; }
     public String password { get; set; }
+    public String contactNumber { get; set; }
 
 	public Host()
 	{
 
 	}
 
-    public Host(int id, String loginName, String name, String email, String password)
+    public Host(int id, String loginName, String name, String email, String password, String contactNumber)
     {
         this.hostId = id;
         this.loginName = loginName;
         this.name = name;
         this.email = email;
         this.password = password;
+        this.contactNumber = contactNumber;
     }
 
     public Boolean checkLogin(String loginName, String password)
     {
-        // TODO
-        throw new NotImplementedException();
+        DbConnection db = new DbConnection();
+        SqlConnection connection = db.OpenConnection();
+        String query = "SELECT login FROM Host WHERE login = @login AND password = @password;";
+        SqlCommand command = new SqlCommand(query, connection);
+        command.Parameters.AddWithValue("@login", loginName);
+        command.Parameters.AddWithValue("@password", password);
+        Object id = command.ExecuteScalar();
+        if (id == null)
+            return false;
+        else
+            return true;
     }
 
-    public Boolean SignUp(String loginName, String name, String email, String password)
+    public Boolean SignUp(String loginName, String name, String email, String password) {
+        return SignUp(loginName, name, email, password, null);
+    }
+
+    public Boolean SignUp(String loginName, String name, String email, String password, String contactNumber)
     {
-        // TODO
-        throw new NotImplementedException();
+        DbConnection db = new DbConnection();
+        SqlConnection connection = db.OpenConnection();
+        String query = "INSERT INTO Host (login, name, email, password, contact_number) VALUES (@login, @name, @email, @password, @contactNumber);";
+        SqlCommand command = new SqlCommand(query, connection);
+        command.Parameters.AddWithValue("@login", loginName);
+        command.Parameters.AddWithValue("@name", name);
+        command.Parameters.AddWithValue("@email", email);
+        command.Parameters.AddWithValue("@password", password);
+        command.Parameters.AddWithValue("@contactNumber", contactNumber);
+        int row = command.ExecuteNonQuery();
+        if (row == 0)
+            return false;
+        else
+            return true;
     }
 
     public Boolean answerUser(String loginName, LoggedUser loggedUser, String message) 
@@ -71,8 +99,23 @@ public class Host : User
 
     public Boolean addProperty(String loginName, Property property)
     {
-        // TODO
-        throw new NotImplementedException();
+        DbConnection db = new DbConnection();
+        SqlConnection connection = db.OpenConnection();
+        String query = "INSERT INTO Property (name, location, no_rooms, price, host) VALUES (@name, @location, @noRooms, @price, @host); SELECT SCOPE_IDENTITY();";
+        SqlCommand command = new SqlCommand(query, connection);
+        command.Parameters.AddWithValue("@name", property.name);
+        command.Parameters.AddWithValue("@location", property.location);
+        command.Parameters.AddWithValue("@noRooms", property.name);
+        command.Parameters.AddWithValue("@price", property.prices[0]);
+        command.Parameters.AddWithValue("@host", loginName);
+        int id = (Int32) command.ExecuteScalar();
+        if (id == null)
+            return false;
+        else
+        {
+            property.propertyId = id;
+            return true;
+        }
     }
 
     // Methods that might be included and used in the future.
