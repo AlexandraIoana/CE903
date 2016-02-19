@@ -106,16 +106,37 @@ public class Host : User
         command.Parameters.AddWithValue("@name", property.name);
         command.Parameters.AddWithValue("@location", property.location);
         command.Parameters.AddWithValue("@noRooms", property.name);
-        command.Parameters.AddWithValue("@price", property.prices[0]);
+        command.Parameters.AddWithValue("@price", property.price);
         command.Parameters.AddWithValue("@host", loginName);
-        int id = (Int32) command.ExecuteScalar();
+        Object id = command.ExecuteScalar();
         if (id == null)
             return false;
         else
         {
-            property.propertyId = id;
+            property.propertyId = (Int32) id;
             return true;
         }
+    }
+
+    public static Host retrieveHost(String loginName)
+    {
+        Host result = new Host();
+        DbConnection db = new DbConnection();
+        SqlConnection connection = db.OpenConnection();
+        String query = "SELECT * FROM Host WHERE login = @login;";
+        SqlCommand command = new SqlCommand(query, connection);
+        command.Parameters.AddWithValue("@login", loginName);
+        SqlDataReader reader = command.ExecuteReader();
+        while (reader.Read())
+        {
+            String name = reader.GetString(1);
+            String email = reader.GetString(2);
+            String password = reader.GetString(3);
+            String contactNo = reader.GetString(4);
+            result = new Host(1, loginName, name, email, password, contactNo);
+        }
+        
+        return result;
     }
 
     // Methods that might be included and used in the future.
