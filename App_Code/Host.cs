@@ -101,11 +101,12 @@ public class Host : User
     {
         DbConnection db = new DbConnection();
         SqlConnection connection = db.OpenConnection();
-        String query = "INSERT INTO Property (name, location, no_rooms, price, host) VALUES (@name, @location, @noRooms, @price, @host); SELECT SCOPE_IDENTITY();";
+        String query = "INSERT INTO Property (name, location, no_of_rooms, no_of_guests, price, host) VALUES (@name, @location, @noRooms, @noGuests, @price, @host); SELECT SCOPE_IDENTITY();";
         SqlCommand command = new SqlCommand(query, connection);
         command.Parameters.AddWithValue("@name", property.name);
         command.Parameters.AddWithValue("@location", property.location);
-        command.Parameters.AddWithValue("@noRooms", property.name);
+        command.Parameters.AddWithValue("@noRooms", property.numberRooms);
+        command.Parameters.AddWithValue("@noGuests", property.numberGuests);
         command.Parameters.AddWithValue("@price", property.price);
         command.Parameters.AddWithValue("@host", loginName);
         Object id = command.ExecuteScalar();

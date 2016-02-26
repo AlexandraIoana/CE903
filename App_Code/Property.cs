@@ -13,6 +13,7 @@ public class Property
     public String name { get; set; }
     public String location { get; set; }
     public int numberRooms { get; set; }
+    public int numberGuests { get; set; }
     public double price { get; set; }
     public String[] imgSrcs { get; set; }
     public Host host { get; set; }
@@ -22,12 +23,13 @@ public class Property
 
 	}
 
-    public Property(int id, String name, String location, int noRooms, double price, String[] imgSrcs, Host host)
+    public Property(int id, String name, String location, int noRooms, int noGuests, double price, String[] imgSrcs, Host host)
     {
         this.propertyId = id;
         this.name = name;
         this.location = location;
         this.numberRooms = noRooms;
+        this.numberGuests = noGuests;
         this.price = price;
         this.imgSrcs = imgSrcs;
         this.host = host;
@@ -48,10 +50,11 @@ public class Property
             int id = reader.GetInt32(0);
             String locat = reader.GetString(2);
             int noRooms = reader.GetInt32(3);
-            double price = reader.GetDouble(4);
-            String hostLoginName = reader.GetString(5);
+            int noGuests = reader.GetInt32(4);
+            double price = reader.GetDouble(5);
+            String hostLoginName = reader.GetString(6);
             Host host = Host.retrieveHost(hostLoginName);
-            property = new Property(id, name, location, noRooms, price, null, host);
+            property = new Property(id, name, location, noRooms, noGuests, price, null, host);
         }
 
         return property;
@@ -73,10 +76,11 @@ public class Property
             String name = reader.GetString(1);
             String locat = reader.GetString(2);
             int noRooms = reader.GetInt32(3);
-            double price = reader.GetDouble(4);
-            String hostLoginName = reader.GetString(5);
+            int noGuests = reader.GetInt32(4);
+            double price = reader.GetDouble(5);
+            String hostLoginName = reader.GetString(6);
             Host host = Host.retrieveHost(hostLoginName);
-            properties.Add(new Property(id, name, location, noRooms, price, null, host));
+            properties.Add(new Property(id, name, location, noRooms, noGuests, price, null, host));
         }
 
         return properties;
@@ -97,10 +101,63 @@ public class Property
             String name = reader.GetString(1);
             String locat = reader.GetString(2);
             int noRooms = reader.GetInt32(3);
-            double price = reader.GetDouble(4);
-            String hostLoginName = reader.GetString(5);
+            int noGuests = reader.GetInt32(4);
+            double price = reader.GetDouble(5);
+            String hostLoginName = reader.GetString(6);
             Host host = Host.retrieveHost(hostLoginName);
-            properties.Add(new Property(id, name, location, noRooms, price, null, host));
+            properties.Add(new Property(id, name, location, noRooms, noGuests, price, null, host));
+        }
+
+        return properties;
+    }
+
+    public List<Property> searchProperty(int noGuests)
+    {
+        List<Property> properties = new List<Property>();
+        DbConnection db = new DbConnection();
+        SqlConnection connection = db.OpenConnection();
+        String query = "SELECT * FROM Property WHERE no_of_guests >= @numberGuests;";
+        SqlCommand command = new SqlCommand(query, connection);
+        command.Parameters.AddWithValue("@numberGuests", noGuests);
+        SqlDataReader reader = command.ExecuteReader();
+        while (reader.Read())
+        {
+            int id = reader.GetInt32(0);
+            String name = reader.GetString(1);
+            String locat = reader.GetString(2);
+            int noRooms = reader.GetInt32(3);
+            int nuGuests = reader.GetInt32(4);
+            double price = reader.GetDouble(5);
+            String hostLoginName = reader.GetString(6);
+            Host host = Host.retrieveHost(hostLoginName);
+            properties.Add(new Property(id, name, location, noRooms, nuGuests, price, null, host));
+        }
+
+        return properties;
+    }
+
+    public List<Property> searchByCompleteCriteria(String location, double maxPrice, int noGuests)
+    {
+        List<Property> properties = new List<Property>();
+        DbConnection db = new DbConnection();
+        SqlConnection connection = db.OpenConnection();
+        String query = "SELECT * FROM Property WHERE no_of_guests >= @numberGuests AND price <= @maxPrice AND location = @location;";
+        SqlCommand command = new SqlCommand(query, connection);
+        command.Parameters.AddWithValue("@numberGuests", noGuests);
+        command.Parameters.AddWithValue("@maxPrice", maxPrice);
+        command.Parameters.AddWithValue("@location", location);
+        SqlDataReader reader = command.ExecuteReader();
+        while (reader.Read())
+        {
+            int id = reader.GetInt32(0);
+            String name = reader.GetString(1);
+            String locat = reader.GetString(2);
+            int noRooms = reader.GetInt32(3);
+            int nuGuests = reader.GetInt32(4);
+            double price = reader.GetDouble(5);
+            String hostLoginName = reader.GetString(6);
+            Host host = Host.retrieveHost(hostLoginName);
+            properties.Add(new Property(id, name, location, noRooms, nuGuests, price, null, host));
         }
 
         return properties;
