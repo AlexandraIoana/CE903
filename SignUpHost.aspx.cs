@@ -33,7 +33,7 @@ public partial class SignUpHost : System.Web.UI.Page
 
             Session["Host"] = registerHost;
             bool registerUser = registerHost.SignUp(registerHost.loginName, registerHost.name,
-                registerHost.email,registerHost.password,registerHost.contactNumber);//store in database
+                registerHost.email, registerHost.password, registerHost.contactNumber);//store in database
             //bool registerUser = registerHost.SignUp();//store in database
 
             if (registerUser == true)

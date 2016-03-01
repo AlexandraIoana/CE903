@@ -9,7 +9,7 @@ public partial class _Default : Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        
+
     }
     protected void Button_Search(object sender, EventArgs e)
     {
@@ -17,7 +17,7 @@ public partial class _Default : Page
         string keyword = searchkey.Text;
         if (keyword != null)
         {
-                  Response.Redirect("SearchResult.aspx");
+            Response.Redirect("SearchResult.aspx");
 
         }
         else

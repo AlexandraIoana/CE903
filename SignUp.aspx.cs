@@ -32,7 +32,7 @@ public partial class SignUp : System.Web.UI.Page
             user.password = password.Text;
 
             Session["User"] = user;
-            bool registerUser = user.SignUp();//store in database
+            bool registerUser = user.SignUp(user.loginName, user.name, user.email, user.password);//store in database
             if (registerUser == true)
             {
                 //redirect to a page

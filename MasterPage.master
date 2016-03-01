@@ -1,0 +1,4 @@
+﻿<%@ Master Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="MasterPage" %>
+
+
+
