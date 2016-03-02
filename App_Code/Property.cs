@@ -54,7 +54,7 @@ public class Property
             double price = reader.GetDouble(5);
             String hostLoginName = reader.GetString(6);
             Host host = Host.retrieveHost(hostLoginName);
-            property = new Property(id, name, location, noRooms, noGuests, price, null, host);
+            property = new Property(id, name, locat, noRooms, noGuests, price, null, host);
         }
 
         return property;
@@ -66,9 +66,9 @@ public class Property
         List<Property> properties = new List<Property>();
         DbConnection db = new DbConnection();
         SqlConnection connection = db.OpenConnection();
-        String query = "SELECT * FROM Property WHERE location = @location;";
+        String query = "SELECT * FROM Property WHERE location LIKE @location;";
         SqlCommand command = new SqlCommand(query, connection);
-        command.Parameters.AddWithValue("@location", location);
+        command.Parameters.AddWithValue("@location", "%" + location + "%");
         SqlDataReader reader = command.ExecuteReader();
         while (reader.Read())
         {
@@ -80,7 +80,7 @@ public class Property
             double price = reader.GetDouble(5);
             String hostLoginName = reader.GetString(6);
             Host host = Host.retrieveHost(hostLoginName);
-            properties.Add(new Property(id, name, location, noRooms, noGuests, price, null, host));
+            properties.Add(new Property(id, name, locat, noRooms, noGuests, price, null, host));
         }
 
         return properties;
@@ -105,7 +105,7 @@ public class Property
             double price = reader.GetDouble(5);
             String hostLoginName = reader.GetString(6);
             Host host = Host.retrieveHost(hostLoginName);
-            properties.Add(new Property(id, name, location, noRooms, noGuests, price, null, host));
+            properties.Add(new Property(id, name, locat, noRooms, noGuests, price, null, host));
         }
 
         return properties;
@@ -130,7 +130,7 @@ public class Property
             double price = reader.GetDouble(5);
             String hostLoginName = reader.GetString(6);
             Host host = Host.retrieveHost(hostLoginName);
-            properties.Add(new Property(id, name, location, noRooms, nuGuests, price, null, host));
+            properties.Add(new Property(id, name, locat, noRooms, nuGuests, price, null, host));
         }
 
         return properties;
@@ -141,11 +141,11 @@ public class Property
         List<Property> properties = new List<Property>();
         DbConnection db = new DbConnection();
         SqlConnection connection = db.OpenConnection();
-        String query = "SELECT * FROM Property WHERE no_of_guests >= @numberGuests AND price <= @maxPrice AND location = @location;";
+        String query = "SELECT * FROM Property WHERE no_of_guests <= @numberGuests AND price <= @maxPrice AND location LIKE @location ORDER BY price ASC;";
         SqlCommand command = new SqlCommand(query, connection);
         command.Parameters.AddWithValue("@numberGuests", noGuests);
         command.Parameters.AddWithValue("@maxPrice", maxPrice);
-        command.Parameters.AddWithValue("@location", location);
+        command.Parameters.AddWithValue("@location", "%" + location + "%");
         SqlDataReader reader = command.ExecuteReader();
         while (reader.Read())
         {
@@ -157,7 +157,7 @@ public class Property
             double price = reader.GetDouble(5);
             String hostLoginName = reader.GetString(6);
             Host host = Host.retrieveHost(hostLoginName);
-            properties.Add(new Property(id, name, location, noRooms, nuGuests, price, null, host));
+            properties.Add(new Property(id, name, locat, noRooms, nuGuests, price, null, host));
         }
 
         return properties;

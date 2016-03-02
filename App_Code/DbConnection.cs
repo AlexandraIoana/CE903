@@ -18,7 +18,7 @@ public class DbConnection
     public DbConnection()
     {
         // CHANGE HERE IN THE FUTURE WITH THE CORRECT CONNECTION STRING
-        connString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+        connString = ConfigurationManager.ConnectionStrings["BedAndBreakfastDatabase"].ConnectionString;
         conn = new SqlConnection(connString);
     }
 

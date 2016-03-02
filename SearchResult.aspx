@@ -5,10 +5,13 @@
         <asp:TextBox ID="location" runat="server"></asp:TextBox>
         <asp:TextBox ID="numberGuests" type="number" runat="server"></asp:TextBox>
         <asp:TextBox ID="price" type="number" runat="server"></asp:TextBox>
-        <asp:Button ID="search" runat="server" Text="Search" OnClick="Button_ViewProperty" />
+        <asp:Button ID="search" runat="server" Text="Search" OnClick="search_Click" />
     </div>
     <div>
-                      <p>
+        <asp:PlaceHolder ID="results" runat="server"></asp:PlaceHolder>
+    </div>
+    <div>
+            <p>
             <asp:Label ID="ErrorLabel" runat="server"></asp:Label>
             </p>
     </div>
