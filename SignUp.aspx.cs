@@ -24,23 +24,32 @@ public partial class SignUp : System.Web.UI.Page
             {
                 user = new LoggedUser();
             }
-
-            //save details in a session
-            user.loginName = loginName.Text;
-            user.name = name.Text;
-            user.email = email.Text.ToLower();//must be in lowercase
-            user.password = password.Text;
-
-            Session["User"] = user;
-            bool registerUser = user.SignUp(user.loginName, user.name, user.email, user.password);//store in database
-            if (registerUser == true)
+            //check that username is unique
+            Boolean check = user.checkUsername(loginName.Text);
+            if (check)
             {
-                //redirect to a page
+                //save details in a session
+                user.loginName = loginName.Text;
+                user.name = name.Text;
+                user.email = email.Text.ToLower();//must be in lowercase
+                user.password = password.Text;
+
+                Session["User"] = user;
+                bool registerUser = user.SignUp(user.loginName, user.name, user.email, user.password);//store in database
+                if (registerUser == true)
+                {
+                    //redirect to a page
+                }
+                else
+                {
+                    error_msg.Text = "Something went wrong, enter your details again";
+                }
             }
             else
             {
-                error_msg.Text = "Something went wrong, enter your details again";
+                error_msg.Text = "Change username";
             }
+
 
         }
     }
