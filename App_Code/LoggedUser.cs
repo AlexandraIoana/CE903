@@ -87,6 +87,28 @@ public class LoggedUser : User
             return true;
     }
 
+    // alexandra: added this method in order to be able to test the messaging system
+    //copied it from Host.cs but changed the specifics
+    public static LoggedUser retrieveUser(String loginName)
+    {
+        LoggedUser result = new LoggedUser();
+        DbConnection db = new DbConnection();
+        SqlConnection connection = db.OpenConnection();
+        String query = "SELECT * FROM LoggedUser WHERE login = @login;";
+        SqlCommand command = new SqlCommand(query, connection);
+        command.Parameters.AddWithValue("@login", loginName);
+        SqlDataReader reader = command.ExecuteReader();
+        while (reader.Read())
+        {
+            String name = reader.GetString(1);
+            String email = reader.GetString(2);
+            String password = reader.GetString(3);
+            result = new LoggedUser(1, loginName, name, email, password);
+        }
+
+        return result;
+    }
+
     public Boolean messageHost(String loginName, Host host, String message) 
     {
         // TODO
