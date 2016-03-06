@@ -9,14 +9,7 @@ public partial class AddProperty : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (!Page.IsPostBack)
-        {
-            //add values to no_rooms ddl
-            for (int i = 1; i < 11; i++)
-            {
-                no_rooms.Items.Add(i.ToString());
-            }
-        }
+
     }
 
     //store property's details to the database
@@ -35,18 +28,19 @@ public partial class AddProperty : System.Web.UI.Page
             //save details in a session
             addProperty.name = name.Text;
             addProperty.location = location.Text;
-            addProperty.numberRooms = Convert.ToInt32(no_rooms.SelectedValue);//convert to integer
-            addProperty.price = Convert.ToDouble(price); //convert to double
-           
+            addProperty.numberRooms = Convert.ToInt32(no_rooms.Text);//convert to integer
+            addProperty.numberGuests = Convert.ToInt32(no_guests.Text);//convert to integer
+            addProperty.price = double.Parse(price.Text); //convert to double
+
             Session["Property"] = addProperty;
 
             //get host's login name from the session
             String username = host.loginName;
-            
             Boolean uploadProperty = host.addProperty(username, addProperty);
-            if (uploadProperty == true)
+            if (uploadProperty)
             {
-                //redirect to a page              
+                //redirect to a page     
+                Response.Redirect("UserProfile");
             }
             else
             {
