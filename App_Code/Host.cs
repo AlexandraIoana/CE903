@@ -56,6 +56,20 @@ public class Host : User
         else
             return true;
     }
+    /**Check uniqness of username return ture if the username is unique*/
+    public Boolean checkUsername(String loginName)
+    {
+        DbConnection db = new DbConnection();
+        SqlConnection connection = db.OpenConnection();
+        String query = "SELECT login FROM Host WHERE login = @login;";
+        SqlCommand command = new SqlCommand(query, connection);
+        command.Parameters.AddWithValue("@login", loginName);
+        Object id = command.ExecuteScalar();
+        if (id == null)
+            return true;
+        else
+            return false;
+    }
 
     public Boolean SignUp(String loginName, String name, String email, String password) {
         return SignUp(loginName, name, email, password, null);

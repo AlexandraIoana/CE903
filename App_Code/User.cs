@@ -16,4 +16,5 @@ public interface User
 
     Boolean checkLogin(String loginName, String password);
     Boolean SignUp(String loginName, String name, String email, String password);
+    Boolean checkUsername(String loginName);
 }
