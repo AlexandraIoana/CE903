@@ -3,7 +3,7 @@
 
     <div>
         <p>Login</p>
-         <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="loginName" ErrorMessage="Username is required">*</asp:RequiredFieldValidator>
+        <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="loginName" ErrorMessage="Username is required">*</asp:RequiredFieldValidator>
         <asp:Label ID="loginName_lbl" runat="server" Text="Username"></asp:Label>
         <asp:TextBox ID="loginName" runat="server"></asp:TextBox>
         <br />
