@@ -14,15 +14,15 @@ public partial class _Default : Page
     protected void Button_Search(object sender, EventArgs e)
     {
 
-        string keyword = searchkey.Text;
+        string keyword = searchKey.Text;
         if (keyword != null)
         {
+            Session["SearchLocation"] = keyword;
             Response.Redirect("SearchResult.aspx");
-
         }
         else
         {
-            ErrorLabel.Text = "Could not find a match for the keyword. Please try with another keyword";
+            ErrorLabel.Text = "Please enter a location. :)";
         }
 
     }
