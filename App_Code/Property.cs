@@ -15,15 +15,15 @@ public class Property
     public int numberRooms { get; set; }
     public int numberGuests { get; set; }
     public double price { get; set; }
-    public String[] imgSrcs { get; set; }
+    public List<Image> images { get; set; }
     public Host host { get; set; }
 
 	public Property()
 	{
-
+        images = new List<Image>();
 	}
 
-    public Property(int id, String name, String location, int noRooms, int noGuests, double price, String[] imgSrcs, Host host)
+    public Property(int id, String name, String location, int noRooms, int noGuests, double price, List<Image> img, Host host)
     {
         this.propertyId = id;
         this.name = name;
@@ -31,7 +31,7 @@ public class Property
         this.numberRooms = noRooms;
         this.numberGuests = noGuests;
         this.price = price;
-        this.imgSrcs = imgSrcs;
+        this.images = img;
         this.host = host;
     }
 
@@ -200,5 +200,11 @@ public class Property
         }
 
         return properties;
+    }
+
+    public void loadImages()
+    {
+        Image aux = new Image();
+        images = aux.loadImagesFromDbWithPropertyId(propertyId);
     }
 }
