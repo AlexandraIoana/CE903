@@ -15,7 +15,4 @@
             <asp:Label ID="ErrorLabel" runat="server"></asp:Label>
             </p>
     </div>
-    <div>
-        <asp:Button ID="ViewProperty" runat="server" Text="Search" OnClick="Button_ViewPropertyDetails" />
-    </div>
 </asp:Content>

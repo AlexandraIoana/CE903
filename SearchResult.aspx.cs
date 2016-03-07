@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
 public partial class SearchResult : System.Web.UI.Page
@@ -29,62 +31,40 @@ public partial class SearchResult : System.Web.UI.Page
             }
 
             List<Property> properties = SearchEngine.SearchByCompleteCriteria(locat, pric, numberOfGuests);
-
-            results.Controls.Clear();
-            foreach (Property property in properties)
+            if (properties.Count == 0)
             {
-                PlaceHolder propertyInfo = new PlaceHolder();
-                Label propertyTitle = new Label();
-                Label propertyLocation = new Label();
-                Label propertyPrice = new Label();
+                ErrorLabel.Text = "Could not find a match for the above criteria. Please try with other criteria";
+            }
+            else
+            {
+                results.Controls.Clear();
+                foreach (Property property in properties)
+                {
+                    PlaceHolder propertyInfo = new PlaceHolder();
+                    HtmlGenericControl propertyTitle = new HtmlGenericControl("h3");
+                    Label propertyLocation = new Label();
+                    Label propertyPrice = new Label();
+                    HyperLink link = new HyperLink();
 
-                propertyTitle.Text = property.name + " / ";
-                propertyPrice.Text = property.price.ToString() + " / ";
-                propertyLocation.Text = property.location;
-                propertyInfo.Controls.Add(propertyTitle);
-                propertyInfo.Controls.Add(propertyPrice);
-                propertyInfo.Controls.Add(propertyLocation);
-                propertyInfo.Controls.Add(new LiteralControl("<br />"));
+                    propertyTitle.InnerHtml = property.name;
+                    propertyPrice.ForeColor = Color.Blue;
+                    propertyPrice.Text = "&pound; " + property.price.ToString();
+                    propertyLocation.Text = property.location + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                    link.Text = "More details...";
+                    link.NavigateUrl = "ViewProperty.aspx?propertyId=" + property.propertyId;
+                    propertyInfo.Controls.Add(propertyTitle);
+                    propertyInfo.Controls.Add(propertyPrice);
+                    propertyInfo.Controls.Add(new LiteralControl("<br />"));
+                    propertyInfo.Controls.Add(propertyLocation);
+                    propertyInfo.Controls.Add(link);
+                    propertyInfo.Controls.Add(new LiteralControl("<hr />"));
 
-                results.Controls.Add(propertyInfo);
+                    results.Controls.Add(propertyInfo);
+                }
             }
         }
 
         // Check in Session if there are search criteria to display results.
-    }
-    protected void Button_ViewProperty(object sender, EventArgs e)
-    {
-
-        //string location = location.Text;
-        string noOfGuests = numberGuests.Text;
-        //string price = price.Text;
-        if (noOfGuests != null)
-        {
-            Response.Redirect("SearchResult.aspx");
-
-        }
-        else
-        {
-            ErrorLabel.Text = "Could not find a match for the above criteria. Please try with other criteria";
-        }
-
-    }
-
-    protected void Button_ViewPropertyDetails(object sender, EventArgs e)
-    {
-
-        string propertyId = "null";
-
-        if (propertyId != null)
-        {
-            Response.Redirect("ViewProperty.aspx");
-
-        }
-        else
-        {
-            ErrorLabel.Text = "Could not find property details. Please contact the host";
-        }
-
     }
 
     protected void search_Click(object sender, EventArgs e)

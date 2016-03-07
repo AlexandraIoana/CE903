@@ -180,7 +180,7 @@ public class Property
         List<Property> properties = new List<Property>();
         DbConnection db = new DbConnection();
         SqlConnection connection = db.OpenConnection();
-        String query = "SELECT * FROM Property WHERE no_of_guests <= @numberGuests AND price <= @maxPrice AND location LIKE @location ORDER BY price ASC;";
+        String query = "SELECT * FROM Property WHERE no_of_guests >= @numberGuests AND price <= @maxPrice AND location LIKE @location ORDER BY price ASC;";
         SqlCommand command = new SqlCommand(query, connection);
         command.Parameters.AddWithValue("@numberGuests", noGuests);
         command.Parameters.AddWithValue("@maxPrice", maxPrice);
