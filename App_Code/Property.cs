@@ -35,7 +35,46 @@ public class Property
         this.host = host;
     }
 
-    
+    /**Check if host has any properties to display in his profile*/
+    public Boolean checkProperty(String loginName)
+    {
+        DbConnection db = new DbConnection();
+        SqlConnection connection = db.OpenConnection();
+        String query = "SELECT host FROM Property WHERE host = @loginName;";
+        SqlCommand command = new SqlCommand(query, connection);
+        command.Parameters.AddWithValue("@loginName", loginName);
+        Object id = command.ExecuteScalar();
+        if (id == null)
+            return false;
+        else
+            return true;
+    }
+    /**retrieve properties of a particular host*/
+    public List<Property> retrievePropertyByHost(String loginName)
+    {
+        List<Property> property = new List<Property>();
+        DbConnection db = new DbConnection();
+        SqlConnection connection = db.OpenConnection();
+        String query = "SELECT * FROM Property WHERE host = @loginName;";
+        SqlCommand command = new SqlCommand(query, connection);
+        command.Parameters.AddWithValue("@loginName", loginName);
+        SqlDataReader reader = command.ExecuteReader();
+        while (reader.Read())
+        {
+            int id = reader.GetInt32(0);
+            String name = reader.GetString(1);
+            String locat = reader.GetString(2);
+            int noRooms = reader.GetInt32(3);
+            int noGuests = reader.GetInt32(4);
+            double price = reader.GetDouble(5);
+            Host host = Host.retrieveHost(loginName);
+            Property p = new Property(id, name, locat, noRooms, noGuests, price, null, host);
+            property.Add(p);
+        }
+
+        return property;
+    }
+
     public Property retrieveProperty(String name)
     {
         Property property = new Property();
