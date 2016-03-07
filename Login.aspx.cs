@@ -41,7 +41,7 @@ public partial class Login : System.Web.UI.Page
                 loggedUser.password = pass;
 
                 Session["User"] = loggedUser;
-                //Response.Redirect("SomePage.aspx");//profile of user
+                Response.Redirect("UserProfile.aspx");//profile of user
             }
             else if (checkHost) //user is host
             {
