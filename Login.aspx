@@ -4,7 +4,7 @@
     <div>
         <p>Login</p>
         <asp:Label ID="logout_lbl" runat="server"></asp:Label>
-        <asp:LinkButton ID="logout" runat="server" OnClick="logout_Click" Visible="False">Logout</asp:LinkButton>
+        <asp:LinkButton ID="logout" runat="server" OnClick="logout_Click" Visible="False" CausesValidation="False">Logout</asp:LinkButton>
         <br />
         <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="loginName" ErrorMessage="Username is required">*</asp:RequiredFieldValidator>
         <asp:Label ID="loginName_lbl" runat="server" Text="Username"></asp:Label>
