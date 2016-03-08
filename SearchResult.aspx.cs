@@ -17,24 +17,32 @@ public partial class SearchResult : System.Web.UI.Page
             String locat = "";
             double pric = 1000000;
             int numberOfGuests = 0;
-            int searchBy = 0;
             List<Property> properties;
             if (location.Text != "")
             {
                 locat = location.Text;
-                Session["searchLocation"] = locat;
             }
             if (price.Text != "")
             {
                 pric = double.Parse(price.Text);
                 Session["searchPrice"] = pric;
             }
+            else
+            {
+                Session["searchPrice"] = "";
+            }
+
             if (numberGuests.Text != "")
             {
                 numberOfGuests = int.Parse(numberGuests.Text);
                 Session["searchGuests"] = numberOfGuests;
             }
-
+            else
+            {
+                Session["searchGuests"] = 0;
+            }
+            
+            Session["searchLocation"] = locat;
 
             if (price.Text != "" && location.Text == null && numberGuests.Text == null)
             {
@@ -48,6 +56,7 @@ public partial class SearchResult : System.Web.UI.Page
             {
                 properties = SearchEngine.SearchByCompleteCriteria(locat, pric, numberOfGuests);
             }
+            
             if (properties.Count == 0)
             {
                 ErrorLabel.Text = "Could not find a match for the above criteria. Please try with other criteria.";
@@ -63,20 +72,67 @@ public partial class SearchResult : System.Web.UI.Page
 
             // Check in Session if there are search criteria to display results.
             String searchLocation = (String)Session["searchLocation"];
-            if (searchLocation != null)
+            Double pric;
+            int guests;
+            try
             {
-                location.Text = searchLocation;
+                pric = (Double)Session["searchPrice"];
+            }
+            catch (Exception)
+            {
+                pric = 1000000;
+            }
+            try
+            {
+                guests = (int)Session["searchGuests"];
+            }
+            catch (Exception)
+            {
+                guests = 0;
+            }
+            List<Property> properties;
 
-                List<Property> properties = SearchEngine.SearchPropertyByLocation(searchLocation);
-                if (properties.Count == 0)
+
+            if (pric != 1000000 && searchLocation == null && guests == 0)
+            {
+                properties = SearchEngine.SearchPropertyByMaxPrice(pric);
+                price.Text = pric.ToString();
+            }
+            else if (pric == 1000000 && searchLocation == null && guests != 0)
+            {
+                properties = SearchEngine.SearchPropertyByNumberOfGuests(guests);
+                numberGuests.Text = guests.ToString();
+            }
+            else
+            {
+                properties = SearchEngine.SearchByCompleteCriteria(searchLocation, pric, guests);
+                location.Text = searchLocation;
+                if (pric != 1000000)
                 {
-                    ErrorLabel.Text = "Could not find a match for the above criteria. Please try with other criteria.";
+                    price.Text = pric.ToString();
                 }
                 else
                 {
-                    ErrorLabel.Text = "";
-                    displayProperties(properties);
+                    price.Text = "";
                 }
+                if (guests != 0)
+                {
+                    numberGuests.Text = guests.ToString();
+                }
+                else
+                {
+                    numberGuests.Text = "";
+                }
+            }
+
+            if (properties.Count == 0)
+            {
+                ErrorLabel.Text = "Could not find a match for the above criteria. Please try with other criteria.";
+            }
+            else
+            {
+                ErrorLabel.Text = "";
+                displayProperties(properties);
             }
         }
     }

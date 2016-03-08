@@ -17,7 +17,7 @@ public partial class _Default : Page
         string keyword = searchKey.Text;
         if (keyword != null)
         {
-            Session["SearchLocation"] = keyword;
+            Session["searchLocation"] = keyword;
             Response.Redirect("SearchResult.aspx");
         }
         else
