@@ -135,20 +135,24 @@ public partial class ViewProperty : System.Web.UI.Page
     protected void FetchImage(int propertyId)
     {
         int id = propertyId;
-        Image1.Visible = id != 0;
         if (id != 0)
         {
             Image image = new Image();
             List<Image> images = image.loadImagesFromDbWithPropertyId(id);
             if (images.Count == 0)
             {
-                
+                Image1.Visible = id != 0;
                 Image1.ImageUrl = "Content/Images/NoImageFound.png";
             }
             else
             {
-                
-                Image1.ImageUrl = "data:image/png;base64," + images[0].bytesInBase64;
+                Images.Visible = true;
+                foreach (Image i in images) {
+                    System.Web.UI.WebControls.Image aux = new System.Web.UI.WebControls.Image();
+                    aux.ImageUrl = "data:image/png;base64," + i.bytesInBase64;
+                    Images.Controls.Add(aux);
+                }
+
             }
         }
     }
