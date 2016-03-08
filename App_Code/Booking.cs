@@ -34,10 +34,10 @@ public class Booking
     {
         DbConnection db = new DbConnection();
         SqlConnection connection = db.OpenConnection();
-        String query = "INSERT INTO Booking (start_date, end_date, user, property) VALUES (@startDate, @endDate, @user, @property);";
+        String query = "INSERT INTO Booking (start_date, end_date, loggedUser, property) VALUES (@startDate, @endDate, @user, @property);";
         SqlCommand command = new SqlCommand(query, connection);
-        command.Parameters.AddWithValue("@startDate", startDate);
-        command.Parameters.AddWithValue("@endDate", endDate);
+        command.Parameters.AddWithValue("@startDate", Convert.ToDateTime(startDate));
+        command.Parameters.AddWithValue("@endDate", Convert.ToDateTime(endDate));
         command.Parameters.AddWithValue("@user", loggedUser.loginName);
         command.Parameters.AddWithValue("@property", property.propertyId);
         int row = command.ExecuteNonQuery();

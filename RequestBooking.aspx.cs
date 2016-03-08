@@ -30,6 +30,8 @@ public partial class RequestBooking : System.Web.UI.Page
         bookingReq.property = property;
         bookingReq.startDate = startDateLab.Text;
         bookingReq.endDate = endDateLab.Text;
+        int propertyId = (int)Session["propertyId"];
+        property.propertyId = propertyId;
         Boolean BookingOk = bookingReq.createBooking(loggedUser, property, bookingReq.startDate, bookingReq.endDate);
         if (BookingOk)
         {
