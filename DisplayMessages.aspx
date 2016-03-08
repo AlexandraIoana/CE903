@@ -1,13 +1,7 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="DisplayMessages.aspx.cs" Inherits="DisplayMessages" %>
+﻿<%@ Page Language="C#"  MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeFile="DisplayMessages.aspx.cs" Inherits="DisplayMessages" %>
 
-<!DOCTYPE html>
+<asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <title></title>
-</head>
-<body>
-    <form id="form1" runat="server">
     <div>
         <p>
             Conversation between <asp:Label ID="user_name"  runat="server"></asp:Label> and <asp:Label ID="host_name"  runat="server"></asp:Label>
@@ -25,6 +19,4 @@
             <asp:Button ID="sendButton" runat="server" Text="Send Message" OnClick="send_Click" /><br />
         </p>
     </div>
-    </form>
-</body>
-</html>
+  </asp:Content>
