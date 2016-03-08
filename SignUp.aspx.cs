@@ -7,7 +7,8 @@ using System.Web.UI.WebControls;
 
 public partial class SignUp : System.Web.UI.Page
 {
-
+    Host h = new Host();
+    LoggedUser c = new LoggedUser();
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
@@ -47,7 +48,8 @@ public partial class SignUp : System.Web.UI.Page
             Session["Host"] = null;
             //check that username is unique
             Boolean check = user.checkUsername(SignUpControl_Customer.LoginName);
-            if (check)
+            Boolean check2 = h.checkUsername(SignUpControl_Customer.LoginName);
+            if (check && check2)
             {
                 //save details in a session
                 user.loginName = SignUpControl_Customer.LoginName;
@@ -92,7 +94,8 @@ public partial class SignUp : System.Web.UI.Page
             Session["Host"] = null;
             //check username for host is unique
             Boolean check = registerHost.checkUsername(SignUpControl_Host.LoginName);
-            if (check)
+            Boolean check2 = c.checkUsername(SignUpControl_Host.LoginName);
+            if (check && check2)
             {
                 //save details in a session
                 registerHost.loginName = SignUpControl_Host.LoginName;

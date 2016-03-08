@@ -45,7 +45,7 @@ public partial class ViewProperty : System.Web.UI.Page
                 DoBookingBtn.Visible = false;
                 ContactHostBtn.Visible = false;
             }
-            else if(Session["User"]!=null && Session["Host"] == null) {
+            else if(Session["User"] != null || Session["Host"] != null) {
                 FileUpload.Visible = true;
                 btnUpload.Visible = true;
                 AddPicLabel.Visible = true;
