@@ -98,6 +98,7 @@ public partial class SearchResult : System.Web.UI.Page
 
             ImageButton propertyImage = new ImageButton();
             propertyImage.Height = 130;
+            propertyImage.ID = "image" + count;
             if (property.images.Count == 0)
             {
                 propertyImage.ImageUrl = "Content/Images/NoImageFound.png";
