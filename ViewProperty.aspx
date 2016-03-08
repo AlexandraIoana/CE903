@@ -43,6 +43,7 @@
     <br />
     <asp:Label ID="lblMessage" runat="server" Text=""
         Font-Names="Arial"></asp:Label>
+        <br />
         
         <asp:PlaceHolder ID="Images" runat="server" Visible="false"></asp:PlaceHolder>
         <asp:Image ID="Image1" runat="server" Visible="false" /></p>

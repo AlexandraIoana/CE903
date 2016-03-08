@@ -122,6 +122,9 @@ public partial class ViewProperty : System.Web.UI.Page
                 {
                     lblMessage.ForeColor = System.Drawing.Color.Green;
                     lblMessage.Text = "File Uploaded Successfully";
+                    Image1.Visible = false;
+                    Images.Controls.Clear();
+                    FetchImage(propertyId);
                 }
                 else
                 {
