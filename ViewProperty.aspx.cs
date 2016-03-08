@@ -10,17 +10,50 @@ public partial class ViewProperty : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        LoggedUser loggedUser;
+        Property property;
+        {
+            loggedUser = (LoggedUser)Session["User"];
+            property = (Property)Session["Property"];
+            if (loggedUser == null)
+            {
+                loggedUser = new LoggedUser();
+            }
+            if (property == null)
+            {
+                property = new Property();
+            }
+        }
         if (!IsPostBack)
         {
             if (Session["Host"] != null || Session["User"] != null)
             {
                 FileUpload.Visible = true;
                 btnUpload.Visible = true;
+                AddPicLabel.Visible = true;
+                SearchResultBtn.Visible = false;
+                DoBookingBtn.Visible = false;
+                ContactHostBtn.Visible = false;
             }
 
             // NEED PROPERTY ID TO WORK (refers to no id)
             // FetchImage(propertyId);
         }
+    }
+    protected void Request_Booking(object sender, EventArgs e)
+    {
+            Response.Redirect("RequestBooking.aspx");
+
+    }
+    protected void Search_Result(object sender, EventArgs e)
+    {
+        Response.Redirect("SearchResult.aspx");
+
+    }
+    protected void Contact_Host(object sender, EventArgs e)
+    {
+        Response.Redirect("SearchResult.aspx");
+
     }
 
     protected void btnUpload_Click(object sender, EventArgs e)
