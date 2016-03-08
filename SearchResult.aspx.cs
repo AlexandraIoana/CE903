@@ -22,14 +22,17 @@ public partial class SearchResult : System.Web.UI.Page
             if (location.Text != "")
             {
                 locat = location.Text;
+                Session["searchLocation"] = locat;
             }
             if (price.Text != "")
             {
                 pric = double.Parse(price.Text);
+                Session["searchPrice"] = pric;
             }
             if (numberGuests.Text != "")
             {
                 numberOfGuests = int.Parse(numberGuests.Text);
+                Session["searchGuests"] = numberOfGuests;
             }
 
 
@@ -55,22 +58,25 @@ public partial class SearchResult : System.Web.UI.Page
                 displayProperties(properties);
             }
         }
-
-        // Check in Session if there are search criteria to display results.
-        String searchLocation = (String)Session["searchLocation"];
-        if (searchLocation != null)
+        else
         {
-            location.Text = searchLocation;
 
-            List<Property> properties = SearchEngine.SearchPropertyByLocation(searchLocation);
-            if (properties.Count == 0)
+            // Check in Session if there are search criteria to display results.
+            String searchLocation = (String)Session["searchLocation"];
+            if (searchLocation != null)
             {
-                ErrorLabel.Text = "Could not find a match for the above criteria. Please try with other criteria.";
-            }
-            else
-            {
-                ErrorLabel.Text = "";
-                displayProperties(properties);
+                location.Text = searchLocation;
+
+                List<Property> properties = SearchEngine.SearchPropertyByLocation(searchLocation);
+                if (properties.Count == 0)
+                {
+                    ErrorLabel.Text = "Could not find a match for the above criteria. Please try with other criteria.";
+                }
+                else
+                {
+                    ErrorLabel.Text = "";
+                    displayProperties(properties);
+                }
             }
         }
     }
