@@ -35,16 +35,6 @@
             <asp:Label ID="ErrorLabel" runat="server"></asp:Label>
             </p>
         </div>
-        <div class="col-md-4">
-            <h2>Gallery</h2>
-            <p>
-                Find out more from our gallery.
-            </p>
-            <p>
-                
-                <asp:HyperLink class="btn btn-default" ID="HyperLink4" runat="server" NavigateUrl="~/gallery.aspx">Gallery&raquo;</asp:HyperLink>
-            </p>
-        </div>
     </div>
 </asp:Content>
 

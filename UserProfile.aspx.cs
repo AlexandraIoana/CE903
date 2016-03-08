@@ -83,20 +83,24 @@ public partial class UserProfile : System.Web.UI.Page
                 else//user is a customer
                 {
                     //customer's profile
+                    Hello.Text = loggedUser.name;
                     loginName.Text = loggedUser.loginName;
                     name.Text = loggedUser.name;
                     email.Text = loggedUser.email;
+                    Search_property_btn.Visible = true;
                 }
             }
             else //user is a host
             {
                 //host's profile
+                Hello.Text = host.name;
                 loginName.Text = host.loginName;
                 name.Text = host.name;
                 email.Text = host.email;
                 contactNumber.Text = host.contactNumber;
                 String number = "Contact number:";
                 contactNumber_lbl.Text = number;
+                Add_property_btn.Visible = true;
 
                 user.Controls.Add(new LiteralControl("<br />"));
                 //display properties for host
@@ -144,7 +148,6 @@ public partial class UserProfile : System.Web.UI.Page
                     Label no_property = new Label();
                     no_property.Text = "No properties for display";
                     user.Controls.Add(no_property);
-                    Add_property_btn.Visible = true;
                 }
             }
         }
@@ -153,5 +156,10 @@ public partial class UserProfile : System.Web.UI.Page
     protected void Add_property_btn_Click(object sender, EventArgs e)
     {
         Response.Redirect("AddProperty.aspx");
+    }
+
+    protected void Search_property_btn_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("SearchResult.aspx");
     }
 }
