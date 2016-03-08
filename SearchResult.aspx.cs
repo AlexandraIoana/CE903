@@ -90,7 +90,7 @@ public partial class SearchResult : System.Web.UI.Page
             }
             else
             {
-                propertyImage.ImageUrl = "data:image/png;base64," + property.images[0].bytes;
+                propertyImage.ImageUrl = "data:image/png;base64," + property.images[0].bytesInBase64;
             }
 
             HtmlGenericControl propertyInfo = new HtmlGenericControl("fieldset");

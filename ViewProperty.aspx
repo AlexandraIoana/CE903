@@ -14,7 +14,7 @@
                     <asp:BoundField DataField="location" HeaderText="Address" SortExpression="location" />
                     <asp:BoundField DataField="no_of_rooms" HeaderText="Rooms Available" SortExpression="no_of_rooms" />
                     <asp:BoundField DataField="price" HeaderText="Guided Price" SortExpression="price" />
-                    <asp:BoundField DataField="host" HeaderText="Proprietor" SortExpression="host" />
+                    <asp:BoundField DataField="host" HeaderText="Host" SortExpression="host" />
                 </Columns>
                        <EditRowStyle BackColor="#7C6F57" />
                        <FooterStyle BackColor="#1C5E55" Font-Bold="True" ForeColor="White" />
@@ -27,24 +27,29 @@
                        <SortedDescendingCellStyle BackColor="#D4DFE1" />
                        <SortedDescendingHeaderStyle BackColor="#15524A" />
         </asp:GridView>
-        <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:BedAndBreakfastConnectionString %>" SelectCommand="SELECT [name], [location], [no_of_rooms], [no_of_guests], [price], [host] FROM [Property] WHERE ([id] = @id)">
+        <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:BedAndBreakfastDatabase %>" SelectCommand="SELECT [name], [location], [no_of_rooms], [no_of_guests], [price], [host] FROM [Property] WHERE ([id] = @id)">
             <SelectParameters>
                 <asp:QueryStringParameter Name="id" DefaultValue="1" QueryStringField="propertyId" Type="Int32" />
             </SelectParameters>
         </asp:SqlDataSource>
             </p>
     <p>
-        &nbsp;</p>
-    <p>
-        <asp:Label ID="AddPicLabel" runat="server" Text=" Add More Pictures" Visible="false"></asp:Label></p>
+        <asp:Label ID="AddPicLabel" runat="server" Text="Add More Pictures" Visible="false"></asp:Label></p>
     <p>        
-        <asp:FileUpload ID="FileUpload" runat="server" Visible="false"/>
-    <asp:Button ID="btnUpload" runat="server" Text="Upload"
+        <asp:FileUpload ID="FileUpload" CssClass="btn btn-default" style="display: inline-block" runat="server" Visible="false"/>
+    <asp:Button ID="btnUpload" CssClass="btn btn-default" style="display: inline-block" runat="server" Text="Upload"
         OnClick="btnUpload_Click" Visible="false"/>
     <br />
     <asp:Label ID="lblMessage" runat="server" Text=""
         Font-Names="Arial"></asp:Label>
-    <asp:Image ID="Image" runat="server" Visible="false" /></p>
+        
+        <asp:DataList ID="Images" runat="server" Visible="false">
+            <ItemTemplate>
+                <asp:Image ID="ImageL" runat="server" />
+            </ItemTemplate>
+        </asp:DataList>
+        <asp:Image ID="Image1" runat="server" Visible="false" /></p>
+
 
                 <p>
                     <asp:Button ID="SearchResultBtn" class="btn btn-default" runat="server" Text="Back to Search" OnClick="Search_Result"/>

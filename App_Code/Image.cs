@@ -57,13 +57,11 @@ public class Image
     {
         DbConnection db = new DbConnection();
         SqlConnection connection = db.OpenConnection();
-        String query = "INSERT INTO Images (name, contentType, data, user, property) VALUES (@name, @contentType, @data, @user, @property);";
+        String query = "INSERT INTO Images (name, contentType, property, userLogin, data) VALUES (@name, @contentType, @property, @user, @data);";
         SqlCommand command = new SqlCommand(query, connection);
         command.Parameters.AddWithValue("@name", name);
         command.Parameters.AddWithValue("@contentType", contentType);
-        command.Parameters.AddWithValue("@data", bytes);
-        command.Parameters.AddWithValue("@user", user);
-        if (propertyId == -1)
+        if (propertyId != -1)
         {
             command.Parameters.AddWithValue("@property", propertyId);
         }
@@ -71,9 +69,12 @@ public class Image
         {
             command.Parameters.AddWithValue("@property", "NULL");
         }
+        command.Parameters.AddWithValue("@user", user);
+        command.Parameters.AddWithValue("@data", bytes);
 
         try
         {
+            System.Diagnostics.Debug.Write(command.CommandText);
             command.ExecuteNonQuery();
             return true;
         }
@@ -97,12 +98,12 @@ public class Image
             id = reader.GetInt32(0);
             name = reader.GetString(1);
             contentType = reader.GetString(2);
-            long len = reader.GetBytes(3, 0, null, 0, 0);
+            long len = reader.GetBytes(5, 0, null, 0, 0);
             bytes = new Byte[len];
-            reader.GetBytes(3, 0, bytes, 0, (int)len);
+            reader.GetBytes(5, 0, bytes, 0, (int)len);
             bytesInBase64 = Convert.ToBase64String(bytes, 0, bytes.Length);
             user = reader.GetString(4);
-            propertyId = reader.GetInt32(5);
+            propertyId = reader.GetInt32(3);
             return true;
         }
         return false;
@@ -122,11 +123,11 @@ public class Image
             int id = reader.GetInt32(0);
             String name = reader.GetString(1);
             String contentType = reader.GetString(2);
-            long len = reader.GetBytes(3, 0, null, 0, 0);
+            long len = reader.GetBytes(5, 0, null, 0, 0);
             byte[] bytes = new Byte[len];
-            reader.GetBytes(3, 0, bytes, 0, (int)len);
+            reader.GetBytes(5, 0, bytes, 0, (int)len);
+            int property = reader.GetInt32(3);
             String user = reader.GetString(4);
-            int property = reader.GetInt32(5);
             images.Add(new Image(id, name, contentType, bytes, user, property));
         }
         return images;

@@ -10,6 +10,16 @@ public partial class ViewProperty : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        int propertyId = -1;
+        try
+        {
+            propertyId = int.Parse(Request.QueryString["propertyId"]);
+        }
+        catch (Exception)
+        {
+            Response.Redirect("SearchResult.aspx");
+        }
+        Session["propertyId"] = propertyId;
         LoggedUser loggedUser;
         Property property;
         {
@@ -31,13 +41,12 @@ public partial class ViewProperty : System.Web.UI.Page
                 FileUpload.Visible = true;
                 btnUpload.Visible = true;
                 AddPicLabel.Visible = true;
-                SearchResultBtn.Visible = false;
+                //SearchResultBtn.Visible = false;
                 DoBookingBtn.Visible = false;
                 ContactHostBtn.Visible = false;
             }
 
-            // NEED PROPERTY ID TO WORK (refers to no id)
-            // FetchImage(propertyId);
+            FetchImage(propertyId);
         }
     }
     protected void Request_Booking(object sender, EventArgs e)
@@ -79,41 +88,46 @@ public partial class ViewProperty : System.Web.UI.Page
         }
         if (contenttype != String.Empty)
         {
-
-            Stream fs = FileUpload.PostedFile.InputStream;
-            BinaryReader br = new BinaryReader(fs);
-            Byte[] bytes = br.ReadBytes((Int32)fs.Length);
-            Host host = Session["Host"] != null ? (Host)Session["Host"] : null;
-            User user = Session["User"] != null ? (User)Session["User"] : null;
-            Image image = null;
-
-            if (user != null)
+            if (Session["propertyId"] == null)
             {
-                // NEED PROPERTY ID TO WORK (-1 refers to no id)
-                image = new Image(filename, contenttype, bytes, user.loginName, -1);
+                Response.Redirect("SearchResult.aspx");
             }
             else
             {
-                // NEED PROPERTY ID TO WORK (-1 refers to no id)
-                image = new Image(filename, contenttype, bytes, host.loginName, -1);
-            }
+                int propertyId = (int)Session["propertyId"];
+                Stream fs = FileUpload.PostedFile.InputStream;
+                BinaryReader br = new BinaryReader(fs);
+                Byte[] bytes = br.ReadBytes((Int32)fs.Length);
+                Host host = Session["Host"] != null ? (Host)Session["Host"] : null;
+                User user = Session["User"] != null ? (User)Session["User"] : null;
+                Image image = null;
 
-            if (image.saveImageInDb())
-            {
-                lblMessage.ForeColor = System.Drawing.Color.Green;
-                lblMessage.Text = "File Uploaded Successfully";
-            }
-            else
-            {
-                lblMessage.ForeColor = System.Drawing.Color.Red;
-                lblMessage.Text = "File format not recognised." +
-                  " Upload Image formats (jpg/png/gif)";
+                if (user != null)
+                {
+                    image = new Image(filename, contenttype, bytes, user.loginName, propertyId);
+                }
+                else
+                {
+                    image = new Image(filename, contenttype, bytes, host.loginName, propertyId);
+                }
+
+                if (image.saveImageInDb())
+                {
+                    lblMessage.ForeColor = System.Drawing.Color.Green;
+                    lblMessage.Text = "File Uploaded Successfully";
+                }
+                else
+                {
+                    lblMessage.ForeColor = System.Drawing.Color.Red;
+                    lblMessage.Text = "File format not recognised." + propertyId +
+                      " Upload Image formats (jpg/png/gif)";
+                }
             }
         }
         else
         {
             lblMessage.ForeColor = System.Drawing.Color.Red;
-            lblMessage.Text = "File format not recognised." +
+            lblMessage.Text = "File format not recognised." + 
               " Upload Image formats (jpg/png/gif)";
         }
     }
@@ -121,12 +135,21 @@ public partial class ViewProperty : System.Web.UI.Page
     protected void FetchImage(int propertyId)
     {
         int id = propertyId;
-        Image.Visible = id != 0;
+        Image1.Visible = id != 0;
         if (id != 0)
         {
             Image image = new Image();
             List<Image> images = image.loadImagesFromDbWithPropertyId(id);
-            Image.ImageUrl = "data:image/png;base64," + images[0].bytesInBase64;
+            if (images.Count == 0)
+            {
+                
+                Image1.ImageUrl = "Content/Images/NoImageFound.png";
+            }
+            else
+            {
+                
+                Image1.ImageUrl = "data:image/png;base64," + images[0].bytesInBase64;
+            }
         }
     }
 }
