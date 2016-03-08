@@ -15,7 +15,7 @@
                     <asp:BoundField DataField="no_of_rooms" HeaderText="Rooms Available" SortExpression="no_of_rooms" />
                     <asp:BoundField DataField="price" HeaderText="Guided Price" SortExpression="price" />
                     <asp:BoundField DataField="host" HeaderText="Host" SortExpression="host" />
-                    <asp:HyperLinkField NavigateUrl="../UserProfile.aspx" HeaderText="Profile" Text="View Profile" />
+                    <asp:HyperLinkField NavigateUrl="../UserProfile.aspx?hostId={host}" HeaderText="Profile" Text="View Profile" />
                 </Columns>
                        <EditRowStyle BackColor="#7C6F57" />
                        <FooterStyle BackColor="#1C5E55" Font-Bold="True" ForeColor="White" />
