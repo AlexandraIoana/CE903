@@ -50,8 +50,8 @@
 
                 <p>
                     <asp:Button ID="SearchResultBtn" class="btn btn-default" runat="server" Text="Back to Search" OnClick="Search_Result"/>
-                <asp:Button class="btn btn-default" ID="ContactHostBtn" runat="server" Text="Contact Host" OnClick="Contact_Host"/>
-                 <asp:Button ID="DoBookingBtn" class="btn btn-default" runat="server" Text="Request Booking" OnClick="Request_Booking" />
+                <asp:Button class="btn btn-default" ID="ContactHostBtn" runat="server" Visible="false" Text="Contact Host" OnClick="Contact_Host"/>
+                 <asp:Button ID="DoBookingBtn" class="btn btn-default" runat="server" Visible="false" Text="Request Booking" OnClick="Request_Booking" />
             </p>
 </asp:Content>
 
