@@ -15,7 +15,7 @@
                     <asp:BoundField DataField="no_of_rooms" HeaderText="Rooms Available" SortExpression="no_of_rooms" />
                     <asp:BoundField DataField="price" HeaderText="Guided Price" SortExpression="price" />
                     <asp:BoundField DataField="host" HeaderText="Host" SortExpression="host" />
-                    <asp:HyperLinkField NavigateUrl="../UserProfile.aspx?hostId={host}" HeaderText="Profile" Text="View Profile" />
+                    <asp:HyperLinkField NavigateUrl="~/UserProfile.aspx" HeaderText="Profile" Text="View Profile" DataNavigateUrlFields="host" DataTextFormatString="View Profile" DataNavigateUrlFormatString="../UserProfile.aspx?hostId={0}" />
                 </Columns>
                        <EditRowStyle BackColor="#7C6F57" />
                        <FooterStyle BackColor="#1C5E55" Font-Bold="True" ForeColor="White" />
@@ -50,8 +50,8 @@
 
                 <p>
                     <asp:Button ID="SearchResultBtn" class="btn btn-default" runat="server" Text="Back to Search" OnClick="Search_Result"/>
-                <asp:Button class="btn btn-default" ID="ContactHostBtn" runat="server" Text="Contact Host" OnClick="Contact_Host"/>
-                 <asp:Button ID="DoBookingBtn" class="btn btn-default" runat="server" Text="Request Booking" OnClick="Request_Booking" />
+                <asp:Button class="btn btn-default" ID="ContactHostBtn" runat="server" Visible="false" Text="Contact Host" OnClick="Contact_Host"/>
+                 <asp:Button ID="DoBookingBtn" class="btn btn-default" runat="server" Visible="false" Text="Request Booking" OnClick="Request_Booking" />
             </p>
 </asp:Content>
 
