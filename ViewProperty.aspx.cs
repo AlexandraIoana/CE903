@@ -8,6 +8,11 @@ using System.Web.UI.WebControls;
 
 public partial class ViewProperty : System.Web.UI.Page
 {
+
+    LoggedUser loggedUser;
+    Property property;
+
+
     protected void Page_Load(object sender, EventArgs e)
     {
         int propertyId = -1;
@@ -20,8 +25,7 @@ public partial class ViewProperty : System.Web.UI.Page
             Response.Redirect("SearchResult.aspx");
         }
         Session["propertyId"] = propertyId;
-        LoggedUser loggedUser;
-        Property property;
+        
      
             loggedUser = (LoggedUser)Session["User"];
             property = (Property)Session["Property"];
@@ -68,7 +72,10 @@ public partial class ViewProperty : System.Web.UI.Page
     }
     protected void Contact_Host(object sender, EventArgs e)
     {
-        Response.Redirect("SearchResult.aspx");
+        int propertyId = (int)Session["propertyId"];
+        property = Property.retrieveProperty(propertyId);
+        Session["messageFor"] = property.host;
+        Response.Redirect("DisplayMessages.aspx");
 
     }
 

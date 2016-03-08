@@ -98,7 +98,31 @@ public class Property
 
         return property;
     }
-    
+
+    public static Property retrieveProperty(int id)
+    {
+        Property property = new Property();
+        DbConnection db = new DbConnection();
+        SqlConnection connection = db.OpenConnection();
+        String query = "SELECT * FROM Property WHERE id = @id;";
+        SqlCommand command = new SqlCommand(query, connection);
+        command.Parameters.AddWithValue("@id", id);
+        SqlDataReader reader = command.ExecuteReader();
+        while (reader.Read())
+        {
+            String name = reader.GetString(1);
+            String locat = reader.GetString(2);
+            int noRooms = reader.GetInt32(3);
+            int noGuests = reader.GetInt32(4);
+            double price = reader.GetDouble(5);
+            String hostLoginName = reader.GetString(6);
+            Host host = Host.retrieveHost(hostLoginName);
+            property = new Property(id, name, locat, noRooms, noGuests, price, null, host);
+        }
+
+        return property;
+    }
+
 
     public List<Property> searchProperty(String location)
     {

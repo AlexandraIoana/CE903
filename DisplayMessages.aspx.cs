@@ -10,12 +10,21 @@ public partial class DisplayMessages : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        //dummies created in order to be able to test the page
-        Host host = Host.retrieveHost("pascalFire");
-        Session["Host"] = host;
-
-
-        LoggedUser user = LoggedUser.retrieveUser("johnWater");
+       
+        LoggedUser user = (LoggedUser)Session["User"];
+        Host host = (Host)Session["Host"];
+        if (user != null)
+        {
+            host = (Host)Session["messageFor"];
+        }
+        else if (host != null)
+        {
+            user = (LoggedUser)Session["messageFor"];
+        }
+        else
+        {
+            Response.Redirect("ViewProperty.aspx");
+        }
         ArrayList conversation = MessageSystem.retrieveConversation(user, host);
         user_name.Text = user.name;
         host_name.Text = host.name;
@@ -54,7 +63,7 @@ public partial class DisplayMessages : System.Web.UI.Page
         if (Page.IsValid)
         {
             String initiator;
-
+            
             LoggedUser user = LoggedUser.retrieveUser("johnWater");
             if (new_message.Text == null)
             {
@@ -68,13 +77,15 @@ public partial class DisplayMessages : System.Web.UI.Page
                 if (loggedUser != null)
                 {
                     initiator = "user";
+                    loggedHost = (Host)Session["messageFor"];
                     MessageSystem.sendMessage(user, loggedHost, new_message.Text, initiator);
                     Response.Redirect("DisplayMessages.aspx");
                     empty_message.Text = "Message sent succesfully.";
                 }
-                if (loggedHost != null)
+                else if (loggedHost != null)
                 {
                     initiator = "host";
+                    loggedUser = (LoggedUser)Session["messageFor"];
                     empty_message.Text = initiator;
                     MessageSystem.sendMessage(user, loggedHost, new_message.Text, initiator);
                     Response.Redirect("DisplayMessages.aspx");
