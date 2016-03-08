@@ -22,7 +22,7 @@ public partial class ViewProperty : System.Web.UI.Page
         Session["propertyId"] = propertyId;
         LoggedUser loggedUser;
         Property property;
-        {
+     
             loggedUser = (LoggedUser)Session["User"];
             property = (Property)Session["Property"];
             if (loggedUser == null)
@@ -33,10 +33,10 @@ public partial class ViewProperty : System.Web.UI.Page
             {
                 property = new Property();
             }
-        }
+      
         if (!IsPostBack)
         {
-            if (Session["Host"] != null || Session["User"] != null)
+            if (Session["Host"] != null)
             {
                 FileUpload.Visible = true;
                 btnUpload.Visible = true;
@@ -44,6 +44,13 @@ public partial class ViewProperty : System.Web.UI.Page
                 //SearchResultBtn.Visible = false;
                 DoBookingBtn.Visible = false;
                 ContactHostBtn.Visible = false;
+            }
+            else if(Session["User"]!=null && Session["Host"] == null) {
+                FileUpload.Visible = true;
+                btnUpload.Visible = true;
+                AddPicLabel.Visible = true;
+                DoBookingBtn.Visible = true;
+                ContactHostBtn.Visible = true;
             }
 
             FetchImage(propertyId);
