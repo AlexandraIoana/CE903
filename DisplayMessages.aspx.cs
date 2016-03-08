@@ -11,11 +11,11 @@ public partial class DisplayMessages : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         //dummies created in order to be able to test the page
-        Host host = Host.retrieveHost("mpeters");
+        Host host = Host.retrieveHost("pascalFire");
         Session["Host"] = host;
 
 
-        LoggedUser user = LoggedUser.retrieveUser("fbatters");
+        LoggedUser user = LoggedUser.retrieveUser("johnWater");
         ArrayList conversation = MessageSystem.retrieveConversation(user, host);
         user_name.Text = user.name;
         host_name.Text = host.name;
@@ -55,7 +55,7 @@ public partial class DisplayMessages : System.Web.UI.Page
         {
             String initiator;
 
-            LoggedUser user = LoggedUser.retrieveUser("fbatters");
+            LoggedUser user = LoggedUser.retrieveUser("johnWater");
             if (new_message.Text == null)
             {
                 empty_message.Text = "Please input a message to be sent.";

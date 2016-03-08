@@ -15,8 +15,10 @@ public partial class SearchResult : System.Web.UI.Page
         {
             // Check the values of the search textboxes and make the new search.
             String locat = "";
-            double pric = 0;
+            double pric = 1000000;
             int numberOfGuests = 0;
+            int searchBy = 0;
+            List<Property> properties;
             if (location.Text != "")
             {
                 locat = location.Text;
@@ -30,7 +32,19 @@ public partial class SearchResult : System.Web.UI.Page
                 numberOfGuests = int.Parse(numberGuests.Text);
             }
 
-            List<Property> properties = SearchEngine.SearchByCompleteCriteria(locat, pric, numberOfGuests);
+
+            if (price.Text != "" && location.Text == null && numberGuests.Text == null)
+            {
+                properties = SearchEngine.SearchPropertyByMaxPrice(pric);
+            }
+            else if (price.Text == null && location.Text == null && numberGuests.Text != null)
+            {
+                properties = SearchEngine.SearchPropertyByNumberOfGuests(numberOfGuests);
+            }
+            else
+            {
+                properties = SearchEngine.SearchByCompleteCriteria(locat, pric, numberOfGuests);
+            }
             if (properties.Count == 0)
             {
                 ErrorLabel.Text = "Could not find a match for the above criteria. Please try with other criteria.";

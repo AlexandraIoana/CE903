@@ -128,7 +128,6 @@ public class Host : User
             return false;
         else
         {
-            property.propertyId = (Int32) id;
             return true;
         }
     }
