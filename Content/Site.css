@@ -22,6 +22,9 @@ textarea {
 @media screen and (min-width: 768px) {
     .jumbotron {
         margin-top: 20px;
+        background-image: url(../Content/Images/bnb_Home.jpg);
+        background-repeat: no-repeat;
+        background-size:cover;
     }
     .body-content {
         padding: 0;
