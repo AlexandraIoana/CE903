@@ -109,34 +109,5 @@ public class LoggedUser : User
         return result;
     }
 
-    public Boolean messageHost(String loginName, Host host, String message) 
-    {
-        // TODO
-        throw new NotImplementedException();
-    }
-
-    public Boolean requestBooking(LoggedUser loggedUser, Booking booking)
-    {
-        // TODO
-        throw new NotImplementedException();
-    }
-
-    // Methods that might be included and used in the future.
-    public Boolean leaveReview(Property property, Booking booking, String message, int review)
-    {
-        // TODO
-        throw new NotImplementedException();
-    }
-
-    public Boolean leaveReview(Host host, Booking booking, String message, int review)
-    {
-        // TODO
-        throw new NotImplementedException();
-    }
-
-    public Boolean postPhoto()
-    {
-        // TODO
-        throw new NotImplementedException();
-    }
+   
 }
