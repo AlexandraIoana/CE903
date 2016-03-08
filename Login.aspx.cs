@@ -12,7 +12,32 @@ public partial class Login : System.Web.UI.Page
     Host hostUser = new Host();
     protected void Page_Load(object sender, EventArgs e)
     {
+        if (!IsPostBack)
+        {
+            LoggedUser loggedUser = (LoggedUser)Session["User"];
+            Host host = (Host)Session["Host"];
+            if (loggedUser != null)
+            {
+                //get username
+                String customer_username = loggedUser.loginName;
+                //display message
+                logout_lbl.Text = "You are already login as " + "." + customer_username;
+                logout.Visible = true;
 
+            }
+            else if (host != null)
+            {
+                //get username
+                String host_username = host.loginName;
+                //display message
+                logout_lbl.Text = "You are already login as " + host_username;
+                logout.Visible = true;
+            }
+            else
+            {
+                logout.Visible = false;
+            }
+        }
     }
 
     /**checks if the user tries to login as host or as customer and redirects him
@@ -63,5 +88,12 @@ public partial class Login : System.Web.UI.Page
             }
 
         }
+    }
+    /**destroy sessions*/
+    protected void logout_Click(object sender, EventArgs e)
+    {
+        Session["User"] = null;
+        Session["Host"] = null;
+        Response.Redirect("Login.aspx");
     }
 }

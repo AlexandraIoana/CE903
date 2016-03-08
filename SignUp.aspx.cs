@@ -43,6 +43,8 @@ public partial class SignUp : System.Web.UI.Page
             {
                 user = new LoggedUser();
             }
+            Session["User"] = null;
+            Session["Host"] = null;
             //check that username is unique
             Boolean check = user.checkUsername(SignUpControl_Customer.LoginName);
             if (check)
@@ -86,6 +88,9 @@ public partial class SignUp : System.Web.UI.Page
             {
                 registerHost = new Host();
             }
+            Session["User"] = null;
+            Session["Host"] = null;
+            //check username for host is unique
             Boolean check = registerHost.checkUsername(SignUpControl_Host.LoginName);
             if (check)
             {
