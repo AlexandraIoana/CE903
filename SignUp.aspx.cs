@@ -13,7 +13,7 @@ public partial class SignUp : System.Web.UI.Page
     {
         if (!IsPostBack)
         {
-            SignUpViews.ActiveViewIndex = 0;//idsplay customer registration
+           // SignUpViews.ActiveViewIndex = 0;//idsplay customer registration
         }
     }
 
@@ -22,10 +22,14 @@ public partial class SignUp : System.Web.UI.Page
         Button clicked = sender as Button;
         if (clicked.ID == "SignUpHost_btn")
         {
+            SignUpHost_btn.BackColor = System.Drawing.Color.DarkGray;
+            SignUpCustomer_btn.BackColor = System.Drawing.Color.Silver;
             SignUpViews.ActiveViewIndex = 1;//display host registration
         }
         else
         {
+            SignUpCustomer_btn.BackColor = System.Drawing.Color.DarkGray;
+            SignUpHost_btn.BackColor = System.Drawing.Color.Silver;
             SignUpViews.ActiveViewIndex = 0;//idsplay customer registration
         }
     }

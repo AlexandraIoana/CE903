@@ -7,8 +7,8 @@
             <table style="width:100%;">
                 <tr>
                     <td>
-                        <asp:Button ID="SignUpCustomer_btn" runat="server" Text="Sign Up as Customer" OnClick="SignUpTab_Click" CausesValidation="False" />
-                        <asp:Button ID="SignUpHost_btn" runat="server" Text="Sign Up as Host" OnClick="SignUpTab_Click" CausesValidation="False" />
+                        <asp:Button ID="SignUpCustomer_btn" runat="server" Text="Sign Up as Customer" OnClick="SignUpTab_Click" CausesValidation="False" BackColor="Silver" />
+                        <asp:Button ID="SignUpHost_btn" runat="server" Text="Sign Up as Host" OnClick="SignUpTab_Click" CausesValidation="False" BackColor="Silver"/>
                         <asp:MultiView ID="SignUpViews" runat="server">
                             <asp:View ID="view_customer" runat="server">
                                 <uc1:SignUpControl ID="SignUpControl_Customer" runat="server" />
