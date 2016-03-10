@@ -32,16 +32,18 @@ public class MessageSystem
         }
         db.CloseConnection();
         db.OpenConnection();
-        String query1 = "SELECT content,initiator FROM Message WHERE conversation_id=@id";
+        String query1 = "SELECT id,content,initiator,message_read FROM Message WHERE conversation_id=@id";
         SqlCommand command1 = new SqlCommand(query1, connection);
         command1.Parameters.AddWithValue("@id", conversation_id);
         SqlDataReader reader1 = command1.ExecuteReader();
         while (reader1.Read())
         {
-            String message = reader1.GetString(0);
-            String initiator = reader1.GetString(1);
+            int id = reader1.GetInt32(0); 
+            String message = reader1.GetString(1);
+            String initiator = reader1.GetString(2);
+            int read = reader1.GetInt32(3);
             ArrayList array = new ArrayList();
-            array.Add(message); array.Add(initiator);
+            array.Add(message); array.Add(initiator); array.Add(read); array.Add(id);
             conversation.Add(array);
         }
 
@@ -69,11 +71,12 @@ public class MessageSystem
         db.OpenConnection();
         if (conversation_id != 0)
         {
-            String query1 = "INSERT INTO Message (content, conversation_id, initiator) VALUES (@text, @id, @init); SELECT SCOPE_IDENTITY();";
+            String query1 = "INSERT INTO Message (content, conversation_id, initiator, message_read) VALUES (@text, @id, @init, @read); SELECT SCOPE_IDENTITY();";
             SqlCommand command1 = new SqlCommand(query1, connection);
             command1.Parameters.AddWithValue("@text", message);
             command1.Parameters.AddWithValue("@id", conversation_id);
             command1.Parameters.AddWithValue("@init", initiator);
+            command1.Parameters.AddWithValue("@read", 0);
             Object id = command1.ExecuteScalar();
             if (id == null)
                 return false;
@@ -110,6 +113,21 @@ public class MessageSystem
             }
         }
         
+    }
+
+    public static Boolean updateMessageToRead(int id)
+    {
+        DbConnection db = new DbConnection();
+        SqlConnection connection = db.OpenConnection();
+
+        String query = "UPDATE Message SET message_read = 1 [WHERE id=@id];";
+        SqlCommand command = new SqlCommand(query, connection);
+        command.Parameters.AddWithValue("@id", id);
+        command.ExecuteNonQuery();
+        
+        db.CloseConnection();
+
+        return true;
     }
 
 }

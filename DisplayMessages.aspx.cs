@@ -10,16 +10,18 @@ public partial class DisplayMessages : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-       
+        String typeOfUser = "";
         LoggedUser user = (LoggedUser)Session["User"];
         Host host = (Host)Session["Host"];
         if (user != null)
         {
             host = (Host)Session["messageFor"];
+            typeOfUser = "user";
         }
         else if (host != null)
         {
             user = (LoggedUser)Session["messageFor"];
+            typeOfUser = "host";
         }
         else
         {
@@ -47,7 +49,13 @@ public partial class DisplayMessages : System.Web.UI.Page
 
             TextBox text = new TextBox();
             text.Text = (string)a[0] + ";";
+            text.BorderStyle = BorderStyle.None;
             text.ReadOnly = true;
+            if (((int)a[2] == 0) && ((string)a[1] != typeOfUser))
+            {
+                text.ForeColor = System.Drawing.Color.DarkRed;
+                MessageSystem.updateMessageToRead((int)a[3]);
+            }
             messages.Controls.Add(text);
 
             messages.Controls.Add(new LiteralControl("<br />"));
