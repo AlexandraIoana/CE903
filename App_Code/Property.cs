@@ -75,7 +75,7 @@ public class Property
         return property;
     }
 
-    public Property retrieveProperty(String name)
+    public static Property retrieveProperty(String name)
     {
         Property property = new Property();
         DbConnection db = new DbConnection();

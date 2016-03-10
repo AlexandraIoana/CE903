@@ -37,10 +37,11 @@ public partial class AddProperty : System.Web.UI.Page
             //get host's login name from the session
             String username = host.loginName;
             Boolean uploadProperty = host.addProperty(username, addProperty);
+            Property property = Property.retrieveProperty(addProperty.name);
             if (uploadProperty)
             {
                 //redirect to a page     
-                Response.Redirect("UserProfile");
+                Response.Redirect("ViewProperty.aspx?propertyId=" + property.propertyId);
             }
             else
             {
