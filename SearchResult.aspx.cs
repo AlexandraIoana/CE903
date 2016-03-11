@@ -177,6 +177,7 @@ public partial class SearchResult : System.Web.UI.Page
             Label propertyLocation = new Label();
             Label propertyPrice = new Label();
             HyperLink link = new HyperLink();
+            Session["PropertyId"] = property.propertyId;
 
             divPhoto.Attributes.CssStyle.Add("width", "200");
             divPhoto.Attributes.CssStyle.Add("float", "left");
@@ -190,6 +191,7 @@ public partial class SearchResult : System.Web.UI.Page
             link.Text = "More details...";
             link.NavigateUrl = "ViewProperty.aspx?propertyId=" + property.propertyId;
             propertyImage.PostBackUrl = "ViewProperty.aspx?propertyId=" + property.propertyId;
+            
             divPhoto.Controls.Add(propertyImage);
             divInfo.Controls.Add(propertyTitle);
             divInfo.Controls.Add(propertyPrice);
