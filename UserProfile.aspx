@@ -3,7 +3,7 @@
     
     <div>
         <h1>
-            Hello, <asp:Label ID="Hello" runat="server" ></asp:Label>
+            <asp:Label ID="Hello" runat="server" ></asp:Label>
         </h1>
         Here are your details: <br />
         <b>Login name: </b>
@@ -18,11 +18,15 @@
         <b><asp:Label ID="contactNumber_lbl" runat="server"></asp:Label> </b>
         <asp:Label ID="contactNumber" runat="server"></asp:Label>
         <br />
-        <asp:Button ID="Add_property_btn" runat="server" OnClick="Add_property_btn_Click" Text="Add Property" Visible="False" />
-        <asp:Button ID="Search_property_btn" runat="server" OnClick="Search_property_btn_Click" Text="Search Property" Visible="False" />
+        <asp:Button class="btn btn-default" ID="Add_property_btn" runat="server" OnClick="Add_property_btn_Click" Text="Add Property" Visible="False" />
+        <asp:Button class="btn btn-default" ID="Search_property_btn" runat="server" OnClick="Search_property_btn_Click" Text="Search Property" Visible="False" />
+        <asp:Button class="btn btn-default" ID="ContactHostBtn" runat="server" Visible="false" Text="Contact Host" OnClick="Contact_Host"/>
         <br />
 
         <asp:PlaceHolder ID="user" runat="server"></asp:PlaceHolder>
+
+        <br />
+        <asp:PlaceHolder ID="bookingInformation" runat="server"></asp:PlaceHolder>
          
     
     </div>
