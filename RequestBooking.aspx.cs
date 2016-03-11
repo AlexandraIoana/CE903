@@ -37,8 +37,8 @@ public partial class RequestBooking : System.Web.UI.Page
         Session["BookingDetails"] = bookingReq;
         Session["startDate"] = startDateLab.Text; ;
         Session["endDate"] = endDateLab.Text;
-        Session["PropertyName"] = property.name;
-        Session["PropertyPrice"] = property.price;
+        Session["PropertyName"] = propertyret.name;
+        Session["PropertyPrice"] = "&pound; " + propertyret.price.ToString();
         Session["loggedUser"] = loggedUser;
         Response.Redirect("BookingReqConfirmation.aspx");
 

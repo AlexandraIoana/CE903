@@ -32,13 +32,17 @@ public partial class BookingReqConfirmation : System.Web.UI.Page
     
     protected void Confirmation(object sender, EventArgs e)
     {
+        Confirm.Enabled = false;
+        GoBack.Visible = false;
         Booking bookingReq = (Booking)Session["BookingDetails"];
         int propertyId = (int)Session["PropertyId"];
         Property propertyret = Property.retrieveProperty(propertyId);
         Boolean BookingOk = bookingReq.createBooking(loggedUser, propertyret, bookingReq.startDate, bookingReq.endDate);
         if (BookingOk)
         {
-            confirmation_msg.Text = "Booking Done. Kindly contact the host for payment";
+            confirmation_msg.Text = "Your Booking is done. Kindly please contact the host for making payment";
+            ContactHostBtn.Visible = true;
+            
         }
         else
         {
@@ -46,6 +50,15 @@ public partial class BookingReqConfirmation : System.Web.UI.Page
         }
         
         
+    }
+
+    protected void Contact_Host(object sender, EventArgs e)
+    {
+        int propertyId = (int)Session["propertyId"];
+        property = Property.retrieveProperty(propertyId);
+        Session["messageFor"] = property.host;
+        Response.Redirect("DisplayMessages.aspx");
+
     }
 
      protected void Redo_Booking(object sender, EventArgs e)

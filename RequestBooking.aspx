@@ -77,9 +77,6 @@
         </div>
     </div>
 
-
-    <asp:Label ID="Label3" runat="server" Text="Label">Number of Guest</asp:Label>
-    <asp:TextBox ID="noGuests" runat="server" CssClass="form-control"></asp:TextBox><br />
     <asp:Button ID="reqBooking" runat="server"  class="btn btn-default" Text="Request Booking" OnClick="Request_Booking" />
     <asp:Label ID="error_msg" runat="server"></asp:Label>
 

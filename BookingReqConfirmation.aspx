@@ -60,7 +60,10 @@
     <div class="row">
         <asp:Button ID="Confirm" CssClass="btn btn-default" runat="server" Text="Confirm Booking" OnClick="Confirmation" />
         <asp:Button ID="GoBack" CssClass="btn btn-default" runat="server" Text="Go Back" OnClick="Redo_Booking" />
-        <asp:Label ID="confirmation_msg" runat="server"></asp:Label>
+        </div>
+    <div class="row">
+        <h3><asp:Label ID="confirmation_msg" runat="server"></asp:Label></h3>
+        <asp:Button class="btn btn-default" ID="ContactHostBtn" runat="server" Visible="false" Text="Contact Host" OnClick="Contact_Host"/>
     </div>
     <div class="row">
         <asp:Label ID="error_msg" runat="server"></asp:Label>
