@@ -144,6 +144,7 @@ public partial class SearchResult : System.Web.UI.Page
 
     protected void displayProperties(List<Property> properties)
     {
+        
         results.Controls.Clear();
         HtmlGenericControl leftSide = new HtmlGenericControl("div");
         HtmlGenericControl rightSide = new HtmlGenericControl("div");
@@ -177,6 +178,7 @@ public partial class SearchResult : System.Web.UI.Page
             Label propertyLocation = new Label();
             Label propertyPrice = new Label();
             HyperLink link = new HyperLink();
+            Session["Property"] = property;
             Session["PropertyId"] = property.propertyId;
 
             divPhoto.Attributes.CssStyle.Add("width", "200");
