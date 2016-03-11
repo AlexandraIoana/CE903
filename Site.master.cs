@@ -15,6 +15,42 @@ public partial class SiteMaster : MasterPage
 
     protected void Page_Init(object sender, EventArgs e)
     {
+        Boolean logout;
+        try
+        {
+            logout = true;
+            Boolean.Parse(Request.QueryString["logout"]);
+        }
+        catch (Exception)
+        {
+            logout = false;
+        }
+        if (logout)
+        {
+            Session["Host"] = null;
+            Session["User"] = null;
+        }
+
+        if (Session["Host"] == null && Session["User"] == null)
+        {
+            PlaceHolderLogout.Visible = false;
+        }
+        else
+        {
+            Host host = (Host)Session["Host"];
+            LoggedUser user = (LoggedUser)Session["User"];
+
+            if (host != null)
+            {
+                userName.Text = host.name;
+            }
+            else
+            {
+                userName.Text = user.name;
+            }
+            PlaceHolderLogin.Visible = false;
+        }
+
         // The code below helps to protect against XSRF attacks
         var requestCookie = Request.Cookies[AntiXsrfTokenKey];
         Guid requestCookieGuidValue;

@@ -62,8 +62,7 @@ public partial class Login : System.Web.UI.Page
                 {
                     loggedUser = new LoggedUser();
                 }
-                loggedUser.loginName = username;
-                loggedUser.password = pass;
+                loggedUser = LoggedUser.retrieveUser(username);
 
                 Session["User"] = loggedUser;
                 Response.Redirect("UserProfile.aspx");//profile of user

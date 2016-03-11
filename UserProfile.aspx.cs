@@ -40,36 +40,14 @@ public partial class UserProfile : System.Web.UI.Page
 
                     foreach (Property p in h_property)
                     {
-                        Label property_num = new Label();
-                        property_num.Text = "Property " + (h_property.IndexOf(p) + 1).ToString();
-                        user.Controls.Add(property_num);
-                        user.Controls.Add(new LiteralControl("<br />"));
-
-                        Label p_name = new Label();
-                        p_name.Text = p.name;
-                        Label p_location = new Label();
-                        p_location.Text = p.location;
-                        Label p_rooms = new Label();
-                        p_rooms.Text = p.numberRooms.ToString();
-                        Label p_guests = new Label();
-                        p_guests.Text = p.numberGuests.ToString();
-                        Label p_price = new Label();
-                        p_price.Text = p.price.ToString();
-                        Label[] property_info = { p_name, p_location, p_rooms, p_guests, p_price };
-                        //add labels
-                        String[] labels = { "Name:", "Location:", "Number of rooms:", "Number of guests", "Price:" };
-                        for (int i = 0; i < labels.Length; i++)
-                        {
-                            Label label = new Label();
-                            label.ID = "Label" + i.ToString();
-                            label.Text = labels[i];
-
-                            user.Controls.Add(label);
-                            user.Controls.Add(property_info[i]);
-                            user.Controls.Add(new LiteralControl("<br />"));
-                        }
-                        user.Controls.Add(new LiteralControl("<br />"));
+                        addPropertyInfo(p, h_property.IndexOf(p) + 1);
                     }
+                }
+                else
+                {
+                    Label no_property = new Label();
+                    no_property.Text = "No properties for display";
+                    user.Controls.Add(no_property);
                 }
 
             }
@@ -112,35 +90,7 @@ public partial class UserProfile : System.Web.UI.Page
 
                     foreach (Property p in h_property)
                     {
-                        Label property_num = new Label();
-                        property_num.Text = "Property " + (h_property.IndexOf(p) + 1).ToString();
-                        user.Controls.Add(property_num);
-                        user.Controls.Add(new LiteralControl("<br />"));
-
-                        Label p_name = new Label();
-                        p_name.Text = p.name;
-                        Label p_location = new Label();
-                        p_location.Text = p.location;
-                        Label p_rooms = new Label();
-                        p_rooms.Text = p.numberRooms.ToString();
-                        Label p_guests = new Label();
-                        p_guests.Text = p.numberGuests.ToString();
-                        Label p_price = new Label();
-                        p_price.Text = p.price.ToString();
-                        Label[] property_info = { p_name, p_location, p_rooms, p_guests, p_price };
-                        //add labels
-                        String[] labels = { "Name:", "Location:", "Number of rooms:", "Number of guests", "Price:" };
-                        for (int i = 0; i < labels.Length; i++)
-                        {
-                            Label label = new Label();
-                            label.ID = "Label" + i.ToString();
-                            label.Text = labels[i];
-
-                            user.Controls.Add(label);
-                            user.Controls.Add(property_info[i]);
-                            user.Controls.Add(new LiteralControl("<br />"));
-                        }
-                        user.Controls.Add(new LiteralControl("<br />"));
+                        addPropertyInfo(p, h_property.IndexOf(p) + 1);
                     }
                 }
                 else
@@ -161,5 +111,48 @@ public partial class UserProfile : System.Web.UI.Page
     protected void Search_property_btn_Click(object sender, EventArgs e)
     {
         Response.Redirect("SearchResult.aspx");
+    }
+
+    protected void addPropertyInfo(Property p, int index)
+    {
+        Label property_num = new Label();
+        property_num.Text = "Property " + index.ToString();
+        user.Controls.Add(property_num);
+        user.Controls.Add(new LiteralControl("<br />"));
+
+        Label p_name = new Label();
+        p_name.Text = p.name;
+        Label p_location = new Label();
+        p_location.Text = p.location;
+        Label p_rooms = new Label();
+        p_rooms.Text = p.numberRooms.ToString();
+        Label p_guests = new Label();
+        p_guests.Text = p.numberGuests.ToString();
+        Label p_price = new Label();
+        p_price.Text = p.price.ToString();
+        Label[] property_info = { p_name, p_location, p_rooms, p_guests, p_price };
+        //add labels
+        String[] labels = { "Name: ", "Location: ", "Number of rooms: ", "Number of guests: ", "Price: " };
+        for (int i = 0; i < labels.Length; i++)
+        {
+            Label label = new Label();
+            label.ID = "Label" + i.ToString();
+            label.Text = labels[i];
+
+            user.Controls.Add(label);
+            if (i == 0)
+            {
+                HyperLink propertyLink = new HyperLink();
+                propertyLink.NavigateUrl = "~/ViewProperty?propertyId=" + p.propertyId;
+                propertyLink.Text = property_info[i].Text;
+                user.Controls.Add(propertyLink);
+            }
+            else
+            {
+                user.Controls.Add(property_info[i]);
+            }
+            user.Controls.Add(new LiteralControl("<br />"));
+        }
+        user.Controls.Add(new LiteralControl("<br />"));
     }
 }
