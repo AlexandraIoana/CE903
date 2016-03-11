@@ -26,20 +26,21 @@ public partial class RequestBooking : System.Web.UI.Page
     {
 
         Booking bookingReq = new Booking();
+        int propertyId = (int)Session["PropertyId"];
+        Property propertyret = Property.retrieveProperty(propertyId);
         bookingReq.loggedUser = loggedUser;
-        bookingReq.property = property;
+        bookingReq.property = propertyret;
         bookingReq.startDate = startDateLab.Text;
         bookingReq.endDate = endDateLab.Text;
-        int propertyId = (int)Session["propertyId"];
+       
         property.propertyId = propertyId;
-        Boolean BookingOk = bookingReq.createBooking(loggedUser, property, bookingReq.startDate, bookingReq.endDate);
-        if (BookingOk)
-        {
-            Response.Redirect("BookingReqConfirmation.aspx");
-        }
-        else
-        {
-            error_msg.Text = "System hit a glitch!, please enter your details again";
-        }
+        Session["BookingDetails"] = bookingReq;
+        Session["startDate"] = startDateLab.Text; ;
+        Session["endDate"] = endDateLab.Text;
+        Session["PropertyName"] = property.name;
+        Session["PropertyPrice"] = property.price;
+        Session["loggedUser"] = loggedUser;
+        Response.Redirect("BookingReqConfirmation.aspx");
+
     }
 }
