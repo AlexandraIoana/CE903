@@ -151,4 +151,21 @@ public class Booking
         else
             return true;
     }
+
+    public static int getAllVisitsOfThisUserInProperty(String userLogin, int propertyId)
+    {
+        int visits = 0;
+        DbConnection db = new DbConnection();
+        SqlConnection connection = db.OpenConnection();
+        String query = "SELECT COUNT(id) FROM Booking WHERE property = @propertyId AND DATEDIFF(DAY, start_date, GETDATE()) >= 0 AND loggedUser = @user;";
+        SqlCommand command = new SqlCommand(query, connection);
+        command.Parameters.AddWithValue("@propertyId", propertyId);
+        command.Parameters.AddWithValue("@user", userLogin);
+        SqlDataReader reader = command.ExecuteReader();
+        while (reader.Read())
+        {
+            visits = reader.GetInt32(0);
+        }
+        return visits;
+    }
 }

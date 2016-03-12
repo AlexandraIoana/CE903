@@ -22,14 +22,14 @@ public partial class SignUp : System.Web.UI.Page
         Button clicked = sender as Button;
         if (clicked.ID == "SignUpHost_btn")
         {
-            SignUpHost_btn.BackColor = System.Drawing.Color.DarkGray;
-            SignUpCustomer_btn.BackColor = System.Drawing.Color.Silver;
+            SignUpHost_btn.CssClass = "btn btn-info";
+            SignUpCustomer_btn.CssClass = "btn btn-default";
             SignUpViews.ActiveViewIndex = 1;//display host registration
         }
         else
         {
-            SignUpCustomer_btn.BackColor = System.Drawing.Color.DarkGray;
-            SignUpHost_btn.BackColor = System.Drawing.Color.Silver;
+            SignUpCustomer_btn.CssClass = "btn btn-info";
+            SignUpHost_btn.CssClass = "btn btn-default";
             SignUpViews.ActiveViewIndex = 0;//idsplay customer registration
         }
     }

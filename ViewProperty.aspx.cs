@@ -25,34 +25,55 @@ public partial class ViewProperty : System.Web.UI.Page
             Response.Redirect("SearchResult.aspx");
         }
         Session["propertyId"] = propertyId;
-        
      
-            loggedUser = (LoggedUser)Session["User"];
-            property = (Property)Session["Property"];
-            if (loggedUser == null)
-            {
-                loggedUser = new LoggedUser();
-            }
-            if (property == null)
-            {
-                property = new Property();
-            }
+        // Bernardo thinks this is not necessary, is not doing anything useful.
+        /*loggedUser = (LoggedUser)Session["User"];
+        property = (Property)Session["Property"];
+        if (loggedUser == null)
+        {
+            loggedUser = new LoggedUser();
+        }
+        if (property == null)
+        {
+            property = new Property();
+        }*/
       
         if (!IsPostBack)
         {
-            if (Session["Host"] != null)
+            Host host = (Host)Session["Host"];
+            LoggedUser user = (LoggedUser)Session["User"];
+            Property property = Property.retrieveProperty(propertyId);
+            if (host != null && property.host.loginName == host.loginName)
             {
                 FileUpload.Visible = true;
                 btnUpload.Visible = true;
                 AddPicLabel.Visible = true;
-                //SearchResultBtn.Visible = false;
                 DoBookingBtn.Visible = false;
                 ContactHostBtn.Visible = false;
             }
-            else if(Session["User"] != null || Session["Host"] != null) {
-                FileUpload.Visible = true;
-                btnUpload.Visible = true;
-                AddPicLabel.Visible = true;
+            else if (host != null)
+            {
+                DoBookingBtn.Visible = false;
+                ContactHostBtn.Visible = false;
+            }
+            else if(user != null) {
+                int visitsOfUser = Booking.getAllVisitsOfThisUserInProperty(user.loginName, propertyId);
+                if (visitsOfUser >= 1)
+                {
+                    FileUpload.Visible = true;
+                    btnUpload.Visible = true;
+                    AddPicLabel.Visible = true;
+                    DoBookingBtn.Visible = true;
+                    ContactHostBtn.Visible = true;
+                }
+                else
+                {
+                    DoBookingBtn.Visible = true;
+                    ContactHostBtn.Visible = true;
+                }
+            }
+            else
+            {
                 DoBookingBtn.Visible = true;
                 ContactHostBtn.Visible = true;
             }
