@@ -24,23 +24,78 @@ public partial class RequestBooking : System.Web.UI.Page
     }
     protected void Request_Booking(object sender, EventArgs e)
     {
+        Boolean isAvailable = Check_Availability(sender, e);
+        if (isAvailable)
+        {
+            Booking bookingReq = new Booking();
+            int propertyId = (int)Session["PropertyId"];
+            Property propertyret = Property.retrieveProperty(propertyId);
+            bookingReq.loggedUser = loggedUser;
+            bookingReq.property = propertyret;
+            bookingReq.startDate = startDateLab.Text;
+            bookingReq.endDate = endDateLab.Text;
 
-        Booking bookingReq = new Booking();
+            property.propertyId = propertyId;
+            Session["BookingDetails"] = bookingReq;
+            Session["startDate"] = startDateLab.Text;
+            Session["endDate"] = endDateLab.Text;
+            Session["PropertyName"] = propertyret.name;
+            Session["PropertyPrice"] = "&pound; " + propertyret.price.ToString();
+            Session["loggedUser"] = loggedUser;
+            Response.Redirect("BookingReqConfirmation.aspx");
+        }
+        else
+        {
+            Availability.Text = "Property not availabe from " + startDateLab.Text + " to " + endDateLab.Text;
+            startDateLab.Text = "";
+            endDateLab.Text = "";
+        }
+
+    }
+    protected Boolean Check_Availability(Object sender, EventArgs e)
+    {
+        Booking booking = new Booking();
         int propertyId = (int)Session["PropertyId"];
-        Property propertyret = Property.retrieveProperty(propertyId);
-        bookingReq.loggedUser = loggedUser;
-        bookingReq.property = propertyret;
-        bookingReq.startDate = startDateLab.Text;
-        bookingReq.endDate = endDateLab.Text;
-       
-        property.propertyId = propertyId;
-        Session["BookingDetails"] = bookingReq;
-        Session["startDate"] = startDateLab.Text; ;
-        Session["endDate"] = endDateLab.Text;
-        Session["PropertyName"] = propertyret.name;
-        Session["PropertyPrice"] = "&pound; " + propertyret.price.ToString();
-        Session["loggedUser"] = loggedUser;
-        Response.Redirect("BookingReqConfirmation.aspx");
+        Boolean isAvailable = false;
+        DateTime startDate = Convert.ToDateTime(startDateLab.Text);
+        DateTime endDate = Convert.ToDateTime(endDateLab.Text);
+        List<DateTime> dates = booking.checkBookedDates(propertyId);
+        if (dates !=null)
+        {
+            DateTime propStartDate = dates.ElementAt(0);
+            DateTime propEndDate = dates.ElementAt(1);
+            List<DateTime> bookedDates = getDates(propStartDate, propEndDate);
+            if (bookedDates.Contains(startDate) || dates.Contains(endDate))
+            {
 
+                isAvailable = false;
+
+            }
+            else
+            {
+                //Availability.Text = "Property is availabe for the dates. Kindly make booking.";
+                isAvailable = true;
+            }
+
+        }
+        else
+        {
+            //Availability.Text = "Property is availabe for the dates. Kindly make booking.";
+            isAvailable = true;
+        }
+        return isAvailable;
+ 
+    }
+
+    public List<DateTime> getDates(DateTime start, DateTime end)
+    {
+        DateTime date = start;
+        List<DateTime> dates = new List<DateTime>();
+        dates.Add(start);
+        while ((date = date.AddDays(1)).Date <= end.Date)
+        {
+            dates.Add(date);
+        }
+        return dates;
     }
 }
