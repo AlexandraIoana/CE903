@@ -42,7 +42,18 @@ public partial class SiteMaster : MasterPage
 
             if (host != null)
             {
-                userName.Text = host.name;
+                List<Booking> pendingBookings = Booking.getPendingBookings(host.loginName);
+                int count = pendingBookings.Count;
+                if (count == 1)
+                {
+                    userName.Text = host.name + " (" + pendingBookings.Count + " pending booking request)";
+                } else if (count > 1) {
+                    userName.Text = host.name + " (" + pendingBookings.Count + " pending booking requests)";
+                }
+                else
+                {
+                    userName.Text = host.name;
+                }
             }
             else
             {
