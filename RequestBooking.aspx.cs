@@ -7,21 +7,24 @@ using System.Web.UI.WebControls;
 
 public partial class RequestBooking : System.Web.UI.Page
 {
+    Host host;
     LoggedUser loggedUser;
     Property property;
     protected void Page_Load(object sender, EventArgs e)
     {
         loggedUser = (LoggedUser)Session["User"];
+        host = (Host)Session["Host"];
         property = (Property)Session["Property"];
-        if (loggedUser == null)
+        if (loggedUser == null && host == null)
         {
-           loggedUser = new LoggedUser();
+            Response.Redirect("/Login.aspx");
         }
         if (property == null)
         {
             property = new Property();
         }
     }
+
     protected void Request_Booking(object sender, EventArgs e)
     {
         Boolean isAvailable = Check_Availability(sender, e);
@@ -54,12 +57,11 @@ public partial class RequestBooking : System.Web.UI.Page
     }
     protected Boolean Check_Availability(Object sender, EventArgs e)
     {
-        Booking booking = new Booking();
         int propertyId = (int)Session["PropertyId"];
         Boolean isAvailable = false;
         DateTime startDate = Convert.ToDateTime(startDateLab.Text);
         DateTime endDate = Convert.ToDateTime(endDateLab.Text);
-        List<DateTime> dates = booking.checkBookedDates(propertyId);
+        List<DateTime> dates = Booking.checkBookedDates(propertyId);
         if (dates !=null)
         {
             DateTime propStartDate = dates.ElementAt(0);

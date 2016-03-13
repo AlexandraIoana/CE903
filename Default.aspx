@@ -5,7 +5,7 @@
     <div class="jumbotron">
         <h1> Bed And Breakfast</h1>
         <p class="lead">Why Bed and Breakfast</p>
-        <p><a href="http://www.bnb.co.uk" class="btn btn-primary btn-lg">About Us &raquo;</a></p>
+        <p><a href="/About.aspx" class="btn btn-primary btn-lg">About Us &raquo;</a></p>
     </div>
 
     <div class="row">

@@ -74,8 +74,8 @@ public partial class ViewProperty : System.Web.UI.Page
             }
             else
             {
-                DoBookingBtn.Visible = true;
-                ContactHostBtn.Visible = true;
+                DoBookingBtn.Visible = false;
+                ContactHostBtn.Visible = false;
             }
 
             FetchImage(propertyId);

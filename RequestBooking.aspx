@@ -70,7 +70,7 @@
         <div class="col-md-4" style="width: 8%">
             <asp:Label ID="Label1" runat="server" Text="Label">Start Date</asp:Label>
 </div><div class="col-md-4" style="width: 21%">
-            <asp:TextBox ID="startDateLab" runat="server" CssClass="form-control" Width="250px" /><br />
+            <asp:TextBox ID="startDateLab" runat="server" CssClass="form-control" Width="250px" required /><br />
         </div>
         <div class="col-md-4" style="align-content: center">
 
@@ -93,7 +93,7 @@
         <div class="col-md-4" style="width: 8%">
             <asp:Label ID="Label2" runat="server" Text="Label">End Date</asp:Label>
             </div><div class="col-md-4" style="width: 21%">
-            <asp:TextBox ID="endDateLab" runat="server" CssClass="form-control" Width="250px" /><br />
+            <asp:TextBox ID="endDateLab" runat="server" CssClass="form-control" Width="250px" required /><br />
         </div>
         <div class="col-md-4" style="height: inherit">
             <asp:ImageButton ID="ImageButton2" runat="server" ImageUrl="~/Content/Images/icon_calendar_small.png" OnClick="Calendar_Visibility_end" ImageAlign="Baseline" />

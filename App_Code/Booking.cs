@@ -178,7 +178,7 @@ public class Booking
         if (propCount != 0)
         {
             DateTime propStartDate, propEndDate;
-            String query = "SELECT start_date, end-date FROM Booking WHERE property = @propertyId;";
+            String query = "SELECT start_date, end_date FROM Booking WHERE property = @propertyId;";
             SqlCommand command = new SqlCommand(query, connection);
             command.Parameters.AddWithValue("@propertyId", propertyId);
             SqlDataReader reader = command.ExecuteReader();
