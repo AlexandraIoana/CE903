@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -168,4 +168,44 @@ public class Booking
         }
         return visits;
     }
+
+    public static List<DateTime> checkBookedDates(int propertyId)
+    {
+        DbConnection db = new DbConnection();
+        SqlConnection connection = db.OpenConnection();
+        List<DateTime> propDates = new List<DateTime>();
+        int propCount = isPropertyExist(propertyId);
+        if (propCount != 0)
+        {
+            DateTime propStartDate, propEndDate;
+            String query = "SELECT start_date, end-date FROM Booking WHERE property = @propertyId;";
+            SqlCommand command = new SqlCommand(query, connection);
+            command.Parameters.AddWithValue("@propertyId", propertyId);
+            SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                propStartDate = reader.GetDateTime(0);
+                propEndDate = reader.GetDateTime(1);
+                propDates.Add(propStartDate);
+                propDates.Add(propEndDate);
+            }
+        }
+        return propDates;
+    }
+    public static int isPropertyExist(int propertyId)
+    {
+        DbConnection db = new DbConnection();
+        SqlConnection connection = db.OpenConnection();
+        int propCount = 0;
+        String query = "SELECT count(property) FROM Booking WHERE property = @propertyId;";
+        SqlCommand command = new SqlCommand(query, connection);
+        command.Parameters.AddWithValue("@propertyId", propertyId);
+        SqlDataReader reader = command.ExecuteReader();
+        while (reader.Read())
+        {
+            propCount = reader.GetInt32(0);
+        }
+        return propCount;
+    }
+
 }
