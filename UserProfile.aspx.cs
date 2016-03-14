@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -43,6 +44,8 @@ public partial class UserProfile : System.Web.UI.Page
 
                     List<Booking> acceptedBookings = Booking.getAcceptedBookings(loggedUser.loginName);
                     List<Booking> rejectedBookings = Booking.getRejectedBookings(loggedUser.loginName);
+                    List<ArrayList> unreadConversations = MessageSystem.getUserUnreadConversation(loggedUser.loginName);
+                    List<ArrayList> readConversations = MessageSystem.getUserReadConversation(loggedUser.loginName);
 
                     if (acceptedBookings.Count != 0)
                     {
@@ -65,6 +68,44 @@ public partial class UserProfile : System.Web.UI.Page
                         foreach (Booking b in rejectedBookings)
                         {
                             displayBookingInfoUser(b);
+                        }
+                    }
+
+                    if (unreadConversations.Count != 0)
+                    {
+                        HtmlGenericControl title = new HtmlGenericControl("h3");
+                        title.InnerHtml = "Unread Conversations";
+                        bookingInformation.Controls.Add(title);
+                        bookingInformation.Controls.Add(new HtmlGenericControl("hr"));
+
+                        foreach (ArrayList conversation in unreadConversations)
+                        {
+                            Button goToConversationB = new Button();
+                            goToConversationB.CssClass = "btn btn-info";
+                            goToConversationB.ID = "conversation-" + conversation[0];
+                            goToConversationB.Click += new EventHandler(goToConversation);
+                            goToConversationB.Text = "Conversation with host " + conversation[1];
+                            bookingInformation.Controls.Add(goToConversationB);
+                            bookingInformation.Controls.Add(new HtmlGenericControl("br"));
+                        }
+                    }
+
+                    if (readConversations.Count != 0)
+                    {
+                        HtmlGenericControl title = new HtmlGenericControl("h3");
+                        title.InnerHtml = "Past Conversations";
+                        bookingInformation.Controls.Add(title);
+                        bookingInformation.Controls.Add(new HtmlGenericControl("hr"));
+
+                        foreach (ArrayList conversation in readConversations)
+                        {
+                            Button goToConversationB = new Button();
+                            goToConversationB.CssClass = "btn btn-default";
+                            goToConversationB.ID = "rConversation-" + conversation[0];
+                            goToConversationB.Click += new EventHandler(goToConversation);
+                            goToConversationB.Text = "Conversation with host " + conversation[1];
+                            bookingInformation.Controls.Add(goToConversationB);
+                            bookingInformation.Controls.Add(new HtmlGenericControl("br"));
                         }
                     }
                 }
@@ -96,10 +137,14 @@ public partial class UserProfile : System.Web.UI.Page
                         //retrieve property information for host
                         List<Property> h_property = property.retrievePropertyByHost(host.loginName);
                         List<Booking> pendingBookings = Booking.getPendingBookings(host.loginName);
+                        List<ArrayList> unreadConversations = MessageSystem.getHostUnreadConversation(host.loginName);
+                        List<ArrayList> readConversations = MessageSystem.getHostReadConversation(host.loginName);
 
+                        int count = 0;
                         foreach (Property p in h_property)
                         {
-                            addPropertyInfo(p, h_property.IndexOf(p) + 1);
+                            addPropertyInfo(p, h_property.IndexOf(p) + 1, count);
+                            count++;
                         }
 
                         if (pendingBookings.Count != 0)
@@ -112,6 +157,44 @@ public partial class UserProfile : System.Web.UI.Page
                             foreach (Booking b in pendingBookings)
                             {
                                 displayBookingInfoHost(b);
+                            }
+                        }
+
+                        if (unreadConversations.Count != 0)
+                        {
+                            HtmlGenericControl title = new HtmlGenericControl("h3");
+                            title.InnerHtml = "Unread Conversations";
+                            bookingInformation.Controls.Add(title);
+                            bookingInformation.Controls.Add(new HtmlGenericControl("hr"));
+
+                            foreach (ArrayList conversation in unreadConversations)
+                            {
+                                Button goToConversationB = new Button();
+                                goToConversationB.CssClass = "btn btn-info";
+                                goToConversationB.ID = "conversation-" + conversation[0];
+                                goToConversationB.Click += new EventHandler(goToConversation);
+                                goToConversationB.Text = "Conversation with user " + conversation[1];
+                                bookingInformation.Controls.Add(goToConversationB);
+                                bookingInformation.Controls.Add(new HtmlGenericControl("br"));
+                            }
+                        }
+
+                        if (readConversations.Count != 0)
+                        {
+                            HtmlGenericControl title = new HtmlGenericControl("h3");
+                            title.InnerHtml = "Past Conversations";
+                            bookingInformation.Controls.Add(title);
+                            bookingInformation.Controls.Add(new HtmlGenericControl("hr"));
+
+                            foreach (ArrayList conversation in readConversations)
+                            {
+                                Button goToConversationB = new Button();
+                                goToConversationB.CssClass = "btn btn-default";
+                                goToConversationB.ID = "rConversation-" + conversation[0];
+                                goToConversationB.Click += new EventHandler(goToConversation);
+                                goToConversationB.Text = "Conversation with user " + conversation[1];
+                                bookingInformation.Controls.Add(goToConversationB);
+                                bookingInformation.Controls.Add(new HtmlGenericControl("br"));
                             }
                         }
                     }
@@ -140,10 +223,14 @@ public partial class UserProfile : System.Web.UI.Page
                     //retrieve property information for host
                     List<Property> h_property = property.retrievePropertyByHost(host.loginName);
                     List<Booking> pendingBookings = Booking.getPendingBookings(host.loginName);
+                    List<ArrayList> unreadConversations = MessageSystem.getHostUnreadConversation(host.loginName);
+                    List<ArrayList> readConversations = MessageSystem.getHostReadConversation(host.loginName);
 
+                    int count = 0;
                     foreach (Property p in h_property)
                     {
-                        addPropertyInfo(p, h_property.IndexOf(p) + 1);
+                        addPropertyInfo(p, h_property.IndexOf(p) + 1, count);
+                        count++;
                     }
 
                     if (pendingBookings.Count != 0)
@@ -156,6 +243,44 @@ public partial class UserProfile : System.Web.UI.Page
                         foreach (Booking b in pendingBookings)
                         {
                             displayBookingInfoHost(b);
+                        }
+                    }
+
+                    if (unreadConversations.Count != 0)
+                    {
+                        HtmlGenericControl title = new HtmlGenericControl("h3");
+                        title.InnerHtml = "Unread Conversations";
+                        bookingInformation.Controls.Add(title);
+                        bookingInformation.Controls.Add(new HtmlGenericControl("hr"));
+
+                        foreach (ArrayList conversation in unreadConversations)
+                        {
+                            Button goToConversationB = new Button();
+                            goToConversationB.CssClass = "btn btn-info";
+                            goToConversationB.ID = "conversation-" + conversation[0];
+                            goToConversationB.Click += new EventHandler(goToConversation);
+                            goToConversationB.Text = "Conversation with user " + conversation[1];
+                            bookingInformation.Controls.Add(goToConversationB);
+                            bookingInformation.Controls.Add(new HtmlGenericControl("br"));
+                        }
+                    }
+
+                    if (readConversations.Count != 0)
+                    {
+                        HtmlGenericControl title = new HtmlGenericControl("h3");
+                        title.InnerHtml = "Past Conversations";
+                        bookingInformation.Controls.Add(title);
+                        bookingInformation.Controls.Add(new HtmlGenericControl("hr"));
+
+                        foreach (ArrayList conversation in readConversations)
+                        {
+                            Button goToConversationB = new Button();
+                            goToConversationB.CssClass = "btn btn-default";
+                            goToConversationB.ID = "rConversation-" + conversation[0];
+                            goToConversationB.Click += new EventHandler(goToConversation);
+                            goToConversationB.Text = "Conversation with user " + conversation[1];
+                            bookingInformation.Controls.Add(goToConversationB);
+                            bookingInformation.Controls.Add(new HtmlGenericControl("br"));
                         }
                     }
                 }
@@ -177,6 +302,8 @@ public partial class UserProfile : System.Web.UI.Page
 
                 List<Booking> acceptedBookings = Booking.getAcceptedBookings(loggedUser.loginName);
                 List<Booking> rejectedBookings = Booking.getRejectedBookings(loggedUser.loginName);
+                List<ArrayList> unreadConversations = MessageSystem.getUserUnreadConversation(loggedUser.loginName);
+                List<ArrayList> readConversations = MessageSystem.getUserReadConversation(loggedUser.loginName);
 
                 if (acceptedBookings.Count != 0)
                 {
@@ -201,6 +328,44 @@ public partial class UserProfile : System.Web.UI.Page
                         displayBookingInfoUser(b);
                     }
                 }
+
+                if (unreadConversations.Count != 0)
+                {
+                    HtmlGenericControl title = new HtmlGenericControl("h3");
+                    title.InnerHtml = "Unread Conversations";
+                    bookingInformation.Controls.Add(title);
+                    bookingInformation.Controls.Add(new HtmlGenericControl("hr"));
+
+                    foreach (ArrayList conversation in unreadConversations)
+                    {
+                        Button goToConversationB = new Button();
+                        goToConversationB.CssClass = "btn btn-info";
+                        goToConversationB.ID = "conversation-" + conversation[0];
+                        goToConversationB.Click += new EventHandler(goToConversation);
+                        goToConversationB.Text = "Conversation with host " + conversation[1];
+                        bookingInformation.Controls.Add(goToConversationB);
+                        bookingInformation.Controls.Add(new HtmlGenericControl("br"));
+                    }
+                }
+
+                if (readConversations.Count != 0)
+                {
+                    HtmlGenericControl title = new HtmlGenericControl("h3");
+                    title.InnerHtml = "Past Conversations";
+                    bookingInformation.Controls.Add(title);
+                    bookingInformation.Controls.Add(new HtmlGenericControl("hr"));
+
+                    foreach (ArrayList conversation in readConversations)
+                    {
+                        Button goToConversationB = new Button();
+                        goToConversationB.CssClass = "btn btn-default";
+                        goToConversationB.ID = "rConversation-" + conversation[0];
+                        goToConversationB.Click += new EventHandler(goToConversation);
+                        goToConversationB.Text = "Conversation with host " + conversation[1];
+                        bookingInformation.Controls.Add(goToConversationB);
+                        bookingInformation.Controls.Add(new HtmlGenericControl("br"));
+                    }
+                }
             }
         }
     }
@@ -215,7 +380,7 @@ public partial class UserProfile : System.Web.UI.Page
         Response.Redirect("SearchResult.aspx");
     }
 
-    protected void addPropertyInfo(Property p, int index)
+    protected void addPropertyInfo(Property p, int index, int count)
     {
         Label property_num = new Label();
         property_num.Text = "Property " + index.ToString();
@@ -238,7 +403,7 @@ public partial class UserProfile : System.Web.UI.Page
         for (int i = 0; i < labels.Length; i++)
         {
             Label label = new Label();
-            label.ID = "Label" + i.ToString();
+            label.ID = "Label-" + count.ToString() + "-" + i.ToString();
             label.Text = labels[i];
 
             user.Controls.Add(label);
@@ -378,9 +543,10 @@ public partial class UserProfile : System.Web.UI.Page
             //retrieve property information for host
             List<Property> h_property = property.retrievePropertyByHost(retrieveHost.loginName);
 
+            int count = 0;
             foreach (Property p in h_property)
             {
-                addPropertyInfo(p, h_property.IndexOf(p) + 1);
+                addPropertyInfo(p, h_property.IndexOf(p) + 1, count++);
             }
         }
         else
@@ -389,5 +555,14 @@ public partial class UserProfile : System.Web.UI.Page
             no_property.Text = "No properties for display";
             user.Controls.Add(no_property);
         }
+    }
+
+    protected void goToConversation(object sender, EventArgs e)
+    {
+        Button b = (Button)sender;
+        String[] id = b.ID.Split('-');
+        int conversationId = int.Parse(id[1]);
+        Session["conversationId"] = conversationId;
+        Response.Redirect("/DisplayMessages.aspx");
     }
 }

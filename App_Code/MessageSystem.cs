@@ -48,9 +48,29 @@ public class MessageSystem
         }
 
         return conversation;
+    }
 
-        
+    public static ArrayList retrieveUsers(int conversationid)
+    {
+        ArrayList users = new ArrayList();
+        DbConnection db = new DbConnection();
+        SqlConnection connection = db.OpenConnection();
 
+        String query1 = "SELECT host, loggedUser FROM Conversation WHERE id=@id";
+        SqlCommand command1 = new SqlCommand(query1, connection);
+        command1.Parameters.AddWithValue("@id", conversationid);
+        SqlDataReader reader1 = command1.ExecuteReader();
+        while (reader1.Read())
+        {
+            String host = reader1.GetString(0);
+            String user = reader1.GetString(1);
+            Host h = Host.retrieveHost(host);
+            LoggedUser u = LoggedUser.retrieveUser(user);
+            users.Add(h);
+            users.Add(u);
+        }
+
+        return users;
     }
 
     public static Boolean sendMessage(LoggedUser user, Host host, String message, String initiator)
@@ -120,7 +140,7 @@ public class MessageSystem
         DbConnection db = new DbConnection();
         SqlConnection connection = db.OpenConnection();
 
-        String query = "UPDATE Message SET message_read = 1 [WHERE id=@id];";
+        String query = "UPDATE Message SET message_read = 1 WHERE id=@id;";
         SqlCommand command = new SqlCommand(query, connection);
         command.Parameters.AddWithValue("@id", id);
         command.ExecuteNonQuery();
@@ -128,6 +148,94 @@ public class MessageSystem
         db.CloseConnection();
 
         return true;
+    }
+
+    public static List<ArrayList> getUserUnreadConversation(String userLogin)
+    {
+        List<ArrayList> conversationIds = new List<ArrayList>();
+        DbConnection db = new DbConnection();
+        SqlConnection connection = db.OpenConnection();
+        int conversation_id;
+        String query = "SELECT DISTINCT conversation_id, host FROM Conversation INNER JOIN Message ON conversation_id = Conversation.id WHERE loggedUser = @user AND message_read = 0 AND initiator = 'host';";
+        SqlCommand command = new SqlCommand(query, connection);
+        command.Parameters.AddWithValue("@user", userLogin);
+        SqlDataReader reader = command.ExecuteReader();
+        while (reader.Read())
+        {
+            conversation_id = reader.GetInt32(0);
+            String host = reader.GetString(1);
+            ArrayList aux = new ArrayList();
+            aux.Add(conversation_id);
+            aux.Add(host);
+            conversationIds.Add(aux);
+        }
+        return conversationIds;
+    }
+
+    public static List<ArrayList> getUserReadConversation(String userLogin)
+    {
+        List<ArrayList> conversationIds = new List<ArrayList>();
+        DbConnection db = new DbConnection();
+        SqlConnection connection = db.OpenConnection();
+        int conversation_id;
+        String query = "SELECT conversation_id, host FROM Conversation INNER JOIN Message ON conversation_id = Conversation.id WHERE loggedUser = @user EXCEPT (SELECT DISTINCT conversation_id, host FROM Conversation INNER JOIN Message ON conversation_id = Conversation.id WHERE loggedUser = @user AND message_read = 0 AND initiator = 'host');";
+        SqlCommand command = new SqlCommand(query, connection);
+        command.Parameters.AddWithValue("@user", userLogin);
+        SqlDataReader reader = command.ExecuteReader();
+        while (reader.Read())
+        {
+            conversation_id = reader.GetInt32(0);
+            String host = reader.GetString(1);
+            ArrayList aux = new ArrayList();
+            aux.Add(conversation_id);
+            aux.Add(host);
+            conversationIds.Add(aux);
+        }
+        return conversationIds;
+    }
+
+    public static List<ArrayList> getHostUnreadConversation(String hostLogin)
+    {
+        List<ArrayList> conversationIds = new List<ArrayList>();
+        DbConnection db = new DbConnection();
+        SqlConnection connection = db.OpenConnection();
+        int conversation_id;
+        String query = "SELECT DISTINCT conversation_id, loggedUser FROM Conversation INNER JOIN Message ON conversation_id = Conversation.id WHERE host = @host AND message_read = 0 AND initiator = 'user';";
+        SqlCommand command = new SqlCommand(query, connection);
+        command.Parameters.AddWithValue("@host", hostLogin);
+        SqlDataReader reader = command.ExecuteReader();
+        while (reader.Read())
+        {
+            conversation_id = reader.GetInt32(0);
+            String user = reader.GetString(1);
+            ArrayList aux = new ArrayList();
+            aux.Add(conversation_id);
+            aux.Add(user);
+            conversationIds.Add(aux);
+        }
+        return conversationIds;
+    }
+
+    public static List<ArrayList> getHostReadConversation(String hostLogin)
+    {
+        List<ArrayList> conversationIds = new List<ArrayList>();
+        DbConnection db = new DbConnection();
+        SqlConnection connection = db.OpenConnection();
+        int conversation_id;
+        String query = "SELECT conversation_id, loggedUser FROM Conversation INNER JOIN Message ON conversation_id = Conversation.id WHERE host = @host EXCEPT (SELECT DISTINCT conversation_id, loggedUser FROM Conversation INNER JOIN Message ON conversation_id = Conversation.id WHERE host = @host AND message_read = 0 AND initiator = 'user');";
+        SqlCommand command = new SqlCommand(query, connection);
+        command.Parameters.AddWithValue("@host", hostLogin);
+        SqlDataReader reader = command.ExecuteReader();
+        while (reader.Read())
+        {
+            conversation_id = reader.GetInt32(0);
+            String user = reader.GetString(1);
+            ArrayList aux = new ArrayList();
+            aux.Add(conversation_id);
+            aux.Add(user);
+            conversationIds.Add(aux);
+        }
+        return conversationIds;
     }
 
 }

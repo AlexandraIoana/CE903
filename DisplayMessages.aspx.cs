@@ -10,32 +10,61 @@ public partial class DisplayMessages : System.Web.UI.Page
 {
     LoggedUser user;
     Host host;
+    ArrayList conversation;
+    String typeOfUser = "";
     protected void Page_Load(object sender, EventArgs e)
     {
-        String typeOfUser = "";
-        LoggedUser user = (LoggedUser)Session["User"];
-        Host host = (Host)Session["Host"];
-        if (user != null)
+        if (Session["conversationId"] != null)
         {
-            host = (Host)Session["messageFor"];
-            typeOfUser = "user";
-        }
-        else if (host != null)
-        {
-            user = (LoggedUser)Session["messageFor"];
-            typeOfUser = "host";
+            int id = (int)Session["conversationId"];
+            ArrayList users = MessageSystem.retrieveUsers(id);
+            user = (LoggedUser)Session["User"];
+            host = (Host)Session["Host"];
+            if (user != null)
+            {
+                host = (Host)users[0];
+                typeOfUser = "user";
+                Session["messageFor"] = host;
+            }
+            else
+            {
+                user = (LoggedUser)users[1];
+                typeOfUser = "host";
+                Session["messageFor"] = user;
+            }
+            
         }
         else
         {
-            Response.Redirect("/SearchResult.aspx");
+            user = (LoggedUser)Session["User"];
+            host = (Host)Session["Host"];
+
+            if (user != null)
+            {
+                host = (Host)Session["messageFor"];
+                typeOfUser = "user";
+            }
+            else if (host != null)
+            {
+                user = (LoggedUser)Session["messageFor"];
+                typeOfUser = "host";
+            }
+            else
+            {
+                Response.Redirect("/SearchResult.aspx");
+            }
+
+            if (user == null || host == null)
+            {
+                Response.Redirect("/SearchResult.aspx");
+            }
         }
 
-        if (user == null || host == null)
-        {
-            Response.Redirect("/SearchResult.aspx");
-        }
+        
 
-        ArrayList conversation = MessageSystem.retrieveConversation(user, host);
+        conversation = MessageSystem.retrieveConversation(user, host);
+
+        
         user_name.Text = user.name;
         host_name.Text = host.name;
         foreach (ArrayList a in conversation)
