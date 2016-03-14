@@ -9,6 +9,7 @@ using System.Web.UI.WebControls;
 public partial class UserProfile : System.Web.UI.Page
 {
     Property property = new Property();
+    String host_name;
     /**display user's profile*/
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -16,7 +17,7 @@ public partial class UserProfile : System.Web.UI.Page
         {
             Host host = (Host)Session["Host"];
             LoggedUser loggedUser = (LoggedUser)Session["User"];
-            String host_name = (String)Request.QueryString["hostId"];
+            host_name = (String)Request.QueryString["hostId"];
             if (loggedUser == null && host == null) //user is not a customer or a host
             {
                 //something went wrong redirect to login page
@@ -348,7 +349,8 @@ public partial class UserProfile : System.Web.UI.Page
 
     protected void Contact_Host(object sender, EventArgs e)
     {
-        Session["messageFor"] = property.host;
+        Host host = (Host)Session["retrievedHostFromProfile"]; 
+        Session["messageFor"] = host;
         Response.Redirect("DisplayMessages.aspx");
     }
 
@@ -356,6 +358,7 @@ public partial class UserProfile : System.Web.UI.Page
     {
         // Load Host Profile from ViewProfile
         Host retrieveHost = Host.retrieveHost(host_name);
+        Session["retrievedHostFromProfile"] = retrieveHost;
         Hello.Text = "Profile of host " + retrieveHost.name;
 
         //host's profile

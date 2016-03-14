@@ -27,8 +27,7 @@ public partial class SiteMaster : MasterPage
         }
         if (logout)
         {
-            Session["Host"] = null;
-            Session["User"] = null;
+            Session.Clear();
         }
 
         if (Session["Host"] == null && Session["User"] == null)

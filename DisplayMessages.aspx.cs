@@ -8,6 +8,8 @@ using System.Web.UI.WebControls;
 
 public partial class DisplayMessages : System.Web.UI.Page
 {
+    LoggedUser user;
+    Host host;
     protected void Page_Load(object sender, EventArgs e)
     {
         String typeOfUser = "";
@@ -25,8 +27,14 @@ public partial class DisplayMessages : System.Web.UI.Page
         }
         else
         {
-            Response.Redirect("ViewProperty.aspx");
+            Response.Redirect("/SearchResult.aspx");
         }
+
+        if (user == null || host == null)
+        {
+            Response.Redirect("/SearchResult.aspx");
+        }
+
         ArrayList conversation = MessageSystem.retrieveConversation(user, host);
         user_name.Text = user.name;
         host_name.Text = host.name;
@@ -47,10 +55,10 @@ public partial class DisplayMessages : System.Web.UI.Page
 
             messages.Controls.Add(new LiteralControl("<br />"));
 
-            TextBox text = new TextBox();
+            Label text = new Label();
             text.Text = (string)a[0] + ";";
             text.BorderStyle = BorderStyle.None;
-            text.ReadOnly = true;
+            //text.ReadOnly = true;
             if (((int)a[2] == 0) && ((string)a[1] != typeOfUser))
             {
                 text.ForeColor = System.Drawing.Color.DarkRed;
@@ -72,8 +80,8 @@ public partial class DisplayMessages : System.Web.UI.Page
         {
             String initiator;
             
-            LoggedUser user = LoggedUser.retrieveUser("johnWater");
-            if (new_message.Text == null)
+            //LoggedUser user = LoggedUser.retrieveUser("johnWater");
+            if (new_message.Text == "")
             {
                 empty_message.Text = "Please input a message to be sent.";
             }
@@ -86,7 +94,7 @@ public partial class DisplayMessages : System.Web.UI.Page
                 {
                     initiator = "user";
                     loggedHost = (Host)Session["messageFor"];
-                    MessageSystem.sendMessage(user, loggedHost, new_message.Text, initiator);
+                    MessageSystem.sendMessage(loggedUser, loggedHost, new_message.Text, initiator);
                     Response.Redirect("DisplayMessages.aspx");
                     empty_message.Text = "Message sent succesfully.";
                 }
@@ -95,7 +103,7 @@ public partial class DisplayMessages : System.Web.UI.Page
                     initiator = "host";
                     loggedUser = (LoggedUser)Session["messageFor"];
                     empty_message.Text = initiator;
-                    MessageSystem.sendMessage(user, loggedHost, new_message.Text, initiator);
+                    MessageSystem.sendMessage(loggedUser, loggedHost, new_message.Text, initiator);
                     Response.Redirect("DisplayMessages.aspx");
                     empty_message.Text = "Message sent succesfully.";
                 }

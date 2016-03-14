@@ -12,7 +12,6 @@ public partial class ViewProperty : System.Web.UI.Page
     LoggedUser loggedUser;
     Property property;
 
-
     protected void Page_Load(object sender, EventArgs e)
     {
         int propertyId = -1;

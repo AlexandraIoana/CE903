@@ -8,14 +8,15 @@ using System.Web.UI.WebControls;
 public partial class BookingReqConfirmation : System.Web.UI.Page
 {
     LoggedUser loggedUser;
+    Host host;
     Property property;
     protected void Page_Load(object sender, EventArgs e)
     {
         loggedUser = (LoggedUser)Session["User"];
-        property = (Property)Session["Property"];
-        if (loggedUser == null)
+        host = (Host)Session["Host"];
+        if (loggedUser == null || host != null)
         {
-           loggedUser = new LoggedUser();
+            Response.Redirect("/SearchResult.aspx");
         }
         if (property == null)
         {
@@ -26,7 +27,14 @@ public partial class BookingReqConfirmation : System.Web.UI.Page
         StartDateLb.Text = (String)Session["StartDate"];
         EndDateLb.Text = (String)Session["EndDate"];
        // Double propertyPrice =(Double)Session["PropertyPrice"];
-        PropertyPriceLb.Text = Session["PropertyPrice"].ToString();
+        try
+        {
+            PropertyPriceLb.Text = Session["PropertyPrice"].ToString();
+        }
+        catch (Exception)
+        {
+            Response.Redirect("/SearchResult.aspx");
+        }
    
     }
     

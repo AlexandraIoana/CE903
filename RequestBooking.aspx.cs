@@ -15,9 +15,9 @@ public partial class RequestBooking : System.Web.UI.Page
         loggedUser = (LoggedUser)Session["User"];
         host = (Host)Session["Host"];
         property = (Property)Session["Property"];
-        if (loggedUser == null && host == null)
+        if (loggedUser == null || host != null)
         {
-            Response.Redirect("/Login.aspx");
+            Response.Redirect("/SearchResult.aspx");
         }
         if (property == null)
         {
