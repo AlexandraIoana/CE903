@@ -190,6 +190,9 @@ public class Booking
                 propDates.Add(propEndDate);
             }
         }
+        else{
+        	propDates = null;
+        }
         return propDates;
     }
     public static int isPropertyExist(int propertyId)
