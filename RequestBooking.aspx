@@ -7,7 +7,7 @@
         Availability.Text = "";
         Check_Date(sender, e);
         startDateLab.Text = startDate.SelectedDate.ToShortDateString();
-        
+
 
 
     }
@@ -16,7 +16,7 @@
         // Check_Date(sender, e);
 
         endDateLab.Text = endDate.SelectedDate.ToShortDateString();
-      
+
         if (startDate.SelectedDate != null && endDate.SelectedDate != null)
         {
             int result = DateTime.Compare(endDate.SelectedDate, startDate.SelectedDate);
@@ -54,9 +54,9 @@
             SetFocus(startDateLab);
         }
 
-        
+
     }
-    void Validate(Object sender, ServerValidateEventArgs  e)
+    void Validate(Object sender, ServerValidateEventArgs e)
     {
         if (startDateLab.Text == "" || endDateLab.Text == "")
         {
@@ -84,15 +84,18 @@
 
     <h2>Request Booking</h2>
     <br />
+    <p>You might want to check first the available dates of the property.</p>
+    <asp:Button ID="Button1" runat="server" Text="Check Availability" class="btn btn-default" ValidateRequestMode="Disabled" PostBackUrl="~/Availability.aspx" />
+    <br /><br />
     <div class="row">
         <div class="col-md-4" style="width: 8%">
             <asp:Label ID="Label1" runat="server" Text="Label">Start Date</asp:Label>
         </div>
         <div class="col-md-4" style="width: 21%">
-             <asp:TextBox ID="startDateLab" runat="server" CssClass="form-control" Width="250px" required/>
+            <asp:TextBox ID="startDateLab" runat="server" CssClass="form-control" Width="250px" />
         </div>
-       
-        <div class="col-md-4" style="width:5%">
+
+        <div class="col-md-4" style="width: 5%">
             <a href="#popup1">
                 <asp:Image ID="ImageButton1" runat="server" ImageUrl="~/Content/Images/icon_calendar_small.png" />
             </a>
@@ -102,7 +105,7 @@
     <div id="popup1" class="overlay">
         <div class="popup">
             <div class="content">
-                <asp:Calendar ID="startDate" runat="server" OnSelectionChanged="Selection_Change"  BackColor="White" BorderColor="#999999" CellPadding="4" DayNameFormat="Shortest" Font-Names="Verdana" Font-Size="8pt" ForeColor="Black" Height="180px" Width="200px">
+                <asp:Calendar ID="startDate" runat="server" OnSelectionChanged="Selection_Change" BackColor="White" BorderColor="#999999" CellPadding="4" DayNameFormat="Shortest" Font-Names="Verdana" Font-Size="8pt" ForeColor="Black" Height="180px" Width="200px">
                     <DayHeaderStyle BackColor="#CCCCCC" Font-Bold="True" Font-Size="7pt" />
                     <NextPrevStyle VerticalAlign="Bottom" />
                     <OtherMonthDayStyle ForeColor="#808080" />
@@ -115,15 +118,15 @@
             </div>
         </div>
     </div>
-    
+
     <div class="row">
         <div class="col-md-4" style="width: 8%">
             <asp:Label ID="Label2" runat="server" Text="Label">End Date</asp:Label>
         </div>
         <div class="col-md-4" style="width: 21%">
-            <asp:TextBox ID="endDateLab" runat="server" CssClass="form-control" Width="250px" required />
+            <asp:TextBox ID="endDateLab" runat="server" CssClass="form-control" Width="250px" />
         </div>
-        <div class="col-md-4" style="width:5%">
+        <div class="col-md-4" style="width: 5%">
             <a href="#popup2">
                 <asp:Image ID="Image2" runat="server" ImageUrl="~/Content/Images/icon_calendar_small.png" />
             </a>
@@ -132,32 +135,25 @@
     <div id="popup2" class="overlay">
         <div class="popup">
             <div class="content">
-            <asp:Calendar ID="endDate" runat="server" OnSelectionChanged="Selection_ChangeEnd"  BackColor="White" BorderColor="#999999" CellPadding="4" DayNameFormat="Shortest" Font-Names="Verdana" Font-Size="8pt" ForeColor="Black" Height="180px" Width="200px">
-                <DayHeaderStyle BackColor="#CCCCCC" Font-Bold="True" Font-Size="7pt" />
-                <NextPrevStyle VerticalAlign="Bottom" />
-                <OtherMonthDayStyle ForeColor="#808080" />
-                <SelectedDayStyle BackColor="#666666" ForeColor="White" Font-Bold="True"></SelectedDayStyle>
-                <SelectorStyle BackColor="#CCCCCC" />
-                <TitleStyle BackColor="#999999" BorderColor="Black" Font-Bold="True" />
-                <TodayDayStyle BackColor="#CCCCCC" ForeColor="Black" />
-                <WeekendDayStyle BackColor="#FFFFCC" />
-            </asp:Calendar>
-           
+                <asp:Calendar ID="endDate" runat="server" OnSelectionChanged="Selection_ChangeEnd" BackColor="White" BorderColor="#999999" CellPadding="4" DayNameFormat="Shortest" Font-Names="Verdana" Font-Size="8pt" ForeColor="Black" Height="180px" Width="200px">
+                    <DayHeaderStyle BackColor="#CCCCCC" Font-Bold="True" Font-Size="7pt" />
+                    <NextPrevStyle VerticalAlign="Bottom" />
+                    <OtherMonthDayStyle ForeColor="#808080" />
+                    <SelectedDayStyle BackColor="#666666" ForeColor="White" Font-Bold="True"></SelectedDayStyle>
+                    <SelectorStyle BackColor="#CCCCCC" />
+                    <TitleStyle BackColor="#999999" BorderColor="Black" Font-Bold="True" />
+                    <TodayDayStyle BackColor="#CCCCCC" ForeColor="Black" />
+                    <WeekendDayStyle BackColor="#FFFFCC" />
+                </asp:Calendar>
+
+            </div>
         </div>
     </div>
-        </div>
     <br />
 
-    <div class="row">
-        <asp:Button ID="Button1" runat="server" Text="Check Availability" class="btn btn-default" OnClick="CheckAvailability" ValidateRequestMode="Disabled" />
-        <asp:Button ID="reqBooking" runat="server" class="btn btn-default" Text="Request Booking" OnClick="Request_Booking" />
-    </div>
-    <div class="row">
-        <asp:Label ID="Availability" runat="server" Text=""></asp:Label>
-    </div>
-    <div class="row">
-        <asp:Label ID="error_msg" runat="server"></asp:Label>
-    </div>
+    <asp:Button ID="reqBooking" runat="server" class="btn btn-default" Text="Request Booking" OnClick="Request_Booking" />
+    <asp:Label ID="Availability" runat="server" Text=""></asp:Label>
+    <asp:Label ID="error_msg" runat="server"></asp:Label>
 
 
 

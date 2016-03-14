@@ -2,6 +2,7 @@
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
         <h2>Dates Available</h2>
+    <p>The dates that are in red are already booked.</p>
     <br />
     <div class="row">
         <div class="col-md-4">
@@ -18,7 +19,5 @@
             </div>
         </div>
     <br/>
-    <div class="row">
         <asp:Button class="btn btn-default" ID="Button1" runat="server" Text="Back to Booking" OnClick="BackToBooking" />
-    </div>
 </asp:Content>

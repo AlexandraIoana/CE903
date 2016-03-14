@@ -26,8 +26,15 @@ public partial class Availability : System.Web.UI.Page
 
     {
         Booking booking = new Booking();
-
-        int propertyId = (int)Session["PropertyId"];
+        int propertyId = 0;
+        try
+        {
+            propertyId = (int)Session["PropertyId"];
+        }
+        catch (Exception)
+        {
+            Response.Redirect("/SearchResult.aspx");
+        }
         List<DateTime> dates = Booking.checkBookedDates(propertyId);
         if (dates != null)
         {

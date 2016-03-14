@@ -186,8 +186,10 @@ public class Booking
             {
                 propStartDate = reader.GetDateTime(0);
                 propEndDate = reader.GetDateTime(1);
-                propDates.Add(propStartDate);
-                propDates.Add(propEndDate);
+                for (var date = propStartDate; date <= propEndDate; date = date.AddDays(1))
+                {
+                    propDates.Add(date);
+                }
             }
         }
         else{
