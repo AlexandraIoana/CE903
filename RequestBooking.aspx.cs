@@ -15,16 +15,15 @@ public partial class RequestBooking : System.Web.UI.Page
         loggedUser = (LoggedUser)Session["User"];
         host = (Host)Session["Host"];
         property = (Property)Session["Property"];
-        if (loggedUser == null || host != null)
+        if (loggedUser == null && host == null)
         {
-            Response.Redirect("/SearchResult.aspx");
+            Response.Redirect("/Login.aspx");
         }
         if (property == null)
         {
             property = new Property();
         }
     }
-
     protected void Request_Booking(object sender, EventArgs e)
     {
         Boolean isAvailable = Check_Availability(sender, e);
@@ -57,12 +56,13 @@ public partial class RequestBooking : System.Web.UI.Page
     }
     protected Boolean Check_Availability(Object sender, EventArgs e)
     {
+      
         int propertyId = (int)Session["PropertyId"];
         Boolean isAvailable = false;
         DateTime startDate = Convert.ToDateTime(startDateLab.Text);
         DateTime endDate = Convert.ToDateTime(endDateLab.Text);
         List<DateTime> dates = Booking.checkBookedDates(propertyId);
-        if (dates !=null)
+        if (dates !=null && !dates.Equals(null))
         {
             DateTime propStartDate = dates.ElementAt(0);
             DateTime propEndDate = dates.ElementAt(1);
@@ -99,5 +99,9 @@ public partial class RequestBooking : System.Web.UI.Page
             dates.Add(date);
         }
         return dates;
+    }
+    protected void CheckAvailability(object sender, EventArgs e)
+    {
+        Response.Redirect("Availability.aspx");
     }
 }
