@@ -169,7 +169,7 @@ public class Booking
         return visits;
     }
 
-    public static List<DateTime> checkBookedDates(int propertyId)
+    public static List<DateTime> checkAcceptedBookedDates(int propertyId)
     {
         DbConnection db = new DbConnection();
         SqlConnection connection = db.OpenConnection();
@@ -178,7 +178,7 @@ public class Booking
         if (propCount != 0)
         {
             DateTime propStartDate, propEndDate;
-            String query = "SELECT start_date, end_date FROM Booking WHERE property = @propertyId;";
+            String query = "SELECT start_date, end_date FROM Booking WHERE property = @propertyId AND status = 'ACCEPTED';";
             SqlCommand command = new SqlCommand(query, connection);
             command.Parameters.AddWithValue("@propertyId", propertyId);
             SqlDataReader reader = command.ExecuteReader();
@@ -197,6 +197,37 @@ public class Booking
         }
         return propDates;
     }
+
+    public static List<DateTime> checkPendingBookedDates(int propertyId)
+    {
+        DbConnection db = new DbConnection();
+        SqlConnection connection = db.OpenConnection();
+        List<DateTime> propDates = new List<DateTime>();
+        int propCount = isPropertyExist(propertyId);
+        if (propCount != 0)
+        {
+            DateTime propStartDate, propEndDate;
+            String query = "SELECT start_date, end_date FROM Booking WHERE property = @propertyId AND status = 'PENDING';";
+            SqlCommand command = new SqlCommand(query, connection);
+            command.Parameters.AddWithValue("@propertyId", propertyId);
+            SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                propStartDate = reader.GetDateTime(0);
+                propEndDate = reader.GetDateTime(1);
+                for (var date = propStartDate; date <= propEndDate; date = date.AddDays(1))
+                {
+                    propDates.Add(date);
+                }
+            }
+        }
+        else
+        {
+            propDates = null;
+        }
+        return propDates;
+    }
+
     public static int isPropertyExist(int propertyId)
     {
         DbConnection db = new DbConnection();

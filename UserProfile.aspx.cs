@@ -436,6 +436,7 @@ public partial class UserProfile : System.Web.UI.Page
 
         Button accept = new Button();
         Button reject = new Button();
+        Button checkAvailabilityB = new Button();
 
         accept.Text = "Accept Booking";
         accept.ID = "a-" + b.bookingId;
@@ -443,14 +444,20 @@ public partial class UserProfile : System.Web.UI.Page
         reject.Text = "Reject Booking";
         reject.ID = "r-" + b.bookingId;
         reject.CssClass = "btn btn-danger";
+        checkAvailabilityB.Text = "Check Availability Dates";
+        checkAvailabilityB.ID = "ca-" + b.property.propertyId;
+        checkAvailabilityB.CssClass = "btn btn-default";
 
         accept.Click += new EventHandler(acceptBooking);
         reject.Click += new EventHandler(rejectBooking);
+        checkAvailabilityB.Click += new EventHandler(CheckAvailability);
         booking.Controls.Add(bookingTitle);
         booking.Controls.Add(date);
         booking.Controls.Add(accept);
         booking.Controls.Add(new LiteralControl("<span>&nbsp;</span>"));
         booking.Controls.Add(reject);
+        booking.Controls.Add(new LiteralControl("<span>&nbsp;</span>"));
+        booking.Controls.Add(checkAvailabilityB);
         bookingInformation.Controls.Add(booking);
         bookingInformation.Controls.Add(new HtmlGenericControl("hr"));
     }
@@ -510,6 +517,15 @@ public partial class UserProfile : System.Web.UI.Page
         int bookingId = int.Parse(id[1]);
         Booking.rejectBooking(bookingId);
         Response.Redirect(Request.RawUrl);
+    }
+
+    protected void CheckAvailability(object sender, EventArgs e)
+    {
+        Button b = (Button)sender;
+        String[] id = b.ID.Split('-');
+        int propertyId = int.Parse(id[1]);
+        Session["PropertyId"] = propertyId;
+        Response.Redirect("Availability.aspx?host=true");
     }
 
     protected void Contact_Host(object sender, EventArgs e)

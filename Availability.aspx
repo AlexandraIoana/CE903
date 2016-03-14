@@ -20,4 +20,5 @@
         </div>
     <br/>
         <asp:Button class="btn btn-default" ID="Button1" runat="server" Text="Back to Booking" OnClick="BackToBooking" />
+        <asp:Button class="btn btn-default" ID="Button2" runat="server" Text="Back to your profile" OnClick="BackToUserProfile" />
 </asp:Content>

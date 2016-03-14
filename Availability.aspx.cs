@@ -7,23 +7,13 @@ using System.Web.UI.WebControls;
 
 public partial class Availability : System.Web.UI.Page
 {
-    LoggedUser loggedUser;
-    Property property;
+    List<DateTime> aDates;
+    List<DateTime> pDates;
     protected void Page_Load(object sender, EventArgs e)
     {
-        loggedUser = (LoggedUser)Session["User"];
-        property = (Property)Session["Property"];
-        if (loggedUser == null)
-        {
-            loggedUser = new LoggedUser();
-        }
-        if (property == null)
-        {
-            property = new Property();
-        }
+
     }
     protected void Calendar1_DayRender(object sender, DayRenderEventArgs e)
-
     {
         Booking booking = new Booking();
         int propertyId = 0;
@@ -35,23 +25,46 @@ public partial class Availability : System.Web.UI.Page
         {
             Response.Redirect("/SearchResult.aspx");
         }
-        List<DateTime> dates = Booking.checkBookedDates(propertyId);
-        if (dates != null)
+
+        if (Request.QueryString["host"] == "true")
         {
-            for (int i = 0; i < dates.Count(); i++)
+            Button1.Visible = false;
+            aDates = Booking.checkAcceptedBookedDates(propertyId);
+            pDates = null;
+        }
+        else
+        {
+            Button2.Visible = false;
+            aDates = Booking.checkAcceptedBookedDates(propertyId);
+            pDates = Booking.checkPendingBookedDates(propertyId);
+        }
+
+        if (aDates != null)
+        {
+            for (int i = 0; i < aDates.Count(); i++)
             {
-                Calendar1.SelectedDates.Add(dates[i]);
+                Calendar1.SelectedDates.Add(aDates[i]);
                 Calendar1.SelectedDayStyle.BackColor = System.Drawing.Color.Red;
             }
         }
-      
+
+        if (pDates != null)
+        {
+            for (int i = 0; i < pDates.Count(); i++)
+            {
+                Calendar1.SelectedDates.Add(pDates[i]);
             }
+        }
+
+    }
 
     protected void BackToBooking(object sender, EventArgs e)
     {
-      
+        Response.Redirect("/RequestBooking.aspx");
+    }
 
-        Response.Redirect("RequestBooking.aspx");
-
+    protected void BackToUserProfile(object sender, EventArgs e)
+    {
+        Response.Redirect("/UserProfile.aspx");
     }
 }

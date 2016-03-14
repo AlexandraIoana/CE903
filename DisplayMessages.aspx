@@ -9,10 +9,9 @@
         <p>
             <asp:PlaceHolder ID="messages" runat="server"></asp:PlaceHolder><br />
         </p>
-        <p>
-            <asp:TextBox ID="new_message" CssClass="form-control" runat="server" Height="86px" MaxLength="300" Rows="3"  Width="183px"></asp:TextBox><br />
-        </p>
-        <p>
+        <br />
+            <asp:TextBox ID="new_message" TextMode="MultiLine" CssClass="form-control" runat="server" Height="86px" MaxLength="300" Rows="3"  Columns="40"></asp:TextBox><br />
+        <p> 
             <asp:Label ID="empty_message"  runat="server"></asp:Label><br />
         </p>
         <p>

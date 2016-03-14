@@ -69,15 +69,21 @@ public partial class RequestBooking : System.Web.UI.Page
         Boolean isAvailable = false;
         DateTime startDate = Convert.ToDateTime(startDateLab.Text);
         DateTime endDate = Convert.ToDateTime(endDateLab.Text);
-        List<DateTime> dates = Booking.checkBookedDates(propertyId);
-        if (dates.Count > 0)
+        List<DateTime> aDates = Booking.checkAcceptedBookedDates(propertyId);
+        List<DateTime> pDates = Booking.checkPendingBookedDates(propertyId);
+        if (aDates.Count > 0)
         {
             List<DateTime> bookedDates = getDates(startDate, endDate);
             foreach (DateTime d in bookedDates) {
-                if (dates.Contains(d)) {
+                if (aDates.Contains(d)) {
+                    return isAvailable;
+                }
+                if (pDates.Contains(d))
+                {
                     return isAvailable;
                 }
             }
+
             /*if (bookedDates.Contains(startDate) || dates.Contains(endDate))
             {
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Web;
@@ -42,12 +43,38 @@ public partial class SiteMaster : MasterPage
             if (host != null)
             {
                 List<Booking> pendingBookings = Booking.getPendingBookings(host.loginName);
+                List<ArrayList> unreadConversations = MessageSystem.getHostUnreadConversation(host.loginName);
                 int count = pendingBookings.Count;
-                if (count == 1)
+                int unread = unreadConversations.Count;
+                if (count == 1 && unread == 0)
                 {
-                    userName.Text = host.name + " (" + pendingBookings.Count + " pending booking request)";
-                } else if (count > 1) {
-                    userName.Text = host.name + " (" + pendingBookings.Count + " pending booking requests)";
+                    userName.Text = host.name + " (" + count + " pending booking request)";
+                } else if (count > 1 && unread == 0) {
+                    userName.Text = host.name + " (" + count + " pending booking requests)";
+                }
+                else if (count == 0 && unread == 1)
+                {
+                    userName.Text = host.name + " (" + unread + " unread conversation)";
+                }
+                else if (count == 0 && unread > 1)
+                {
+                    userName.Text = host.name + " (" + unread + " unread conversations)";
+                }
+                else if (count == 1 && unread == 1)
+                {
+                    userName.Text = host.name + " (" + count + " pending booking request and " + unread + " unread conversation)";
+                }
+                else if (count == 1 && unread > 1)
+                {
+                    userName.Text = host.name + " (" + count + " pending booking request and " + unread + " unread conversations)";
+                }
+                else if (count > 1 && unread == 1)
+                {
+                    userName.Text = host.name + " (" + count + " pending booking requests and " + unread + " unread conversation)";
+                }
+                else if (count > 1 && unread > 1)
+                {
+                    userName.Text = host.name + " (" + count + " pending booking requests and " + unread + " unread conversations)";
                 }
                 else
                 {
@@ -56,7 +83,20 @@ public partial class SiteMaster : MasterPage
             }
             else
             {
-                userName.Text = user.name;
+                List<ArrayList> unreadConversations = MessageSystem.getUserUnreadConversation(user.loginName);
+                int unread = unreadConversations.Count;
+                if (unread == 1)
+                {
+                    userName.Text = user.name + " (" + unread + " unread conversation)";
+                }
+                else if (unread > 1)
+                {
+                    userName.Text = user.name + " (" + unread + " unread conversations)";
+                }
+                else
+                {
+                    userName.Text = user.name;
+                }
             }
             PlaceHolderLogin.Visible = false;
         }
