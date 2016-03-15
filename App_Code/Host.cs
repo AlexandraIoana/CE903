@@ -93,24 +93,6 @@ public class Host : User
             return true;
     }
 
-    public Boolean answerUser(String loginName, LoggedUser loggedUser, String message) 
-    {
-        // TODO
-        throw new NotImplementedException();
-    }
-
-    public Boolean acceptBooking(LoggedUser loggedUser, Booking booking, String message)
-    {
-        // TODO
-        throw new NotImplementedException();
-    }
-
-    public Boolean declineBooking(LoggedUser loggedUser, Booking booking, String message)
-    {
-        // TODO
-        throw new NotImplementedException();
-    }
-
     public Boolean addProperty(String loginName, Property property)
     {
         DbConnection db = new DbConnection();

@@ -9,7 +9,6 @@ using System.Web.UI.WebControls;
 public partial class ViewProperty : System.Web.UI.Page
 {
 
-    LoggedUser loggedUser;
     Property property;
 
     protected void Page_Load(object sender, EventArgs e)
@@ -24,18 +23,6 @@ public partial class ViewProperty : System.Web.UI.Page
             Response.Redirect("SearchResult.aspx");
         }
         Session["propertyId"] = propertyId;
-     
-        // Bernardo thinks this is not necessary, is not doing anything useful.
-        /*loggedUser = (LoggedUser)Session["User"];
-        property = (Property)Session["Property"];
-        if (loggedUser == null)
-        {
-            loggedUser = new LoggedUser();
-        }
-        if (property == null)
-        {
-            property = new Property();
-        }*/
       
         if (!IsPostBack)
         {
@@ -49,6 +36,7 @@ public partial class ViewProperty : System.Web.UI.Page
                 AddPicLabel.Visible = true;
                 DoBookingBtn.Visible = false;
                 ContactHostBtn.Visible = false;
+                checkAvailability.Visible = true;
             }
             else if (host != null)
             {

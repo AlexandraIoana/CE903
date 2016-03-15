@@ -15,6 +15,14 @@ public partial class RequestBooking : System.Web.UI.Page
         loggedUser = (LoggedUser)Session["User"];
         host = (Host)Session["Host"];
         property = (Property)Session["Property"];
+        try
+        {
+            int propertyId = (int)Session["propertyId"];
+        }
+        catch (Exception)
+        {
+            Response.Redirect("/SearchResult.aspx");
+        }
         if (loggedUser == null && host == null)
         {
             Response.Redirect("/Login.aspx");
@@ -64,18 +72,20 @@ public partial class RequestBooking : System.Web.UI.Page
     }
     protected Boolean Check_Availability(Object sender, EventArgs e)
     {
-      
+
         int propertyId = (int)Session["PropertyId"];
         Boolean isAvailable = false;
         DateTime startDate = Convert.ToDateTime(startDateLab.Text);
         DateTime endDate = Convert.ToDateTime(endDateLab.Text);
         List<DateTime> aDates = Booking.checkAcceptedBookedDates(propertyId);
         List<DateTime> pDates = Booking.checkPendingBookedDates(propertyId);
-        if (aDates.Count > 0)
+        if (aDates != null)
         {
             List<DateTime> bookedDates = getDates(startDate, endDate);
-            foreach (DateTime d in bookedDates) {
-                if (aDates.Contains(d)) {
+            foreach (DateTime d in bookedDates)
+            {
+                if (aDates.Contains(d))
+                {
                     return isAvailable;
                 }
                 if (pDates.Contains(d))
@@ -84,26 +94,14 @@ public partial class RequestBooking : System.Web.UI.Page
                 }
             }
 
-            /*if (bookedDates.Contains(startDate) || dates.Contains(endDate))
-            {
-
-                isAvailable = false;
-
-            }
-            else
-            {*/
-                //Availability.Text = "Property is availabe for the dates. Kindly make booking.";
-                isAvailable = true;
-            //}
-
+            isAvailable = true;
         }
         else
         {
-            //Availability.Text = "Property is availabe for the dates. Kindly make booking.";
             isAvailable = true;
         }
         return isAvailable;
- 
+
     }
 
     public List<DateTime> getDates(DateTime start, DateTime end)
