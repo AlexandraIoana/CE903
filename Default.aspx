@@ -2,7 +2,7 @@
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
-    <div class="jumbotron">
+    <div class="jumbotron" style="background-image:url(../Content/Images/53867_sb1.jpg)">
         <h1 style="color:whitesmoke"> IBAN</h1>
         <p class="lead" style="color:whitesmoke">Uk's no.1 Bed and Breakfast</p>
         <p><a href="/About.aspx" class="btn btn-primary btn-lg">About Us &raquo;</a></p>
