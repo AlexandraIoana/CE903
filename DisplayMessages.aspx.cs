@@ -14,9 +14,9 @@ public partial class DisplayMessages : System.Web.UI.Page
     String typeOfUser = "";
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (Session["conversationId"] != null)
+        if (Request.QueryString["conversationId"] != null)
         {
-            int id = (int)Session["conversationId"];
+            int id = int.Parse(Request.QueryString["conversationId"]);
             ArrayList users = MessageSystem.retrieveUsers(id);
             user = (LoggedUser)Session["User"];
             host = (Host)Session["Host"];
@@ -26,13 +26,17 @@ public partial class DisplayMessages : System.Web.UI.Page
                 typeOfUser = "user";
                 Session["messageFor"] = host;
             }
-            else
+            else if (host != null)
             {
                 user = (LoggedUser)users[1];
                 typeOfUser = "host";
                 Session["messageFor"] = user;
             }
-            
+            else
+            {
+                Response.Redirect("/SearchResult.aspx");
+            }
+
         }
         else
         {

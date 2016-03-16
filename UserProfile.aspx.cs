@@ -445,7 +445,7 @@ public partial class UserProfile : System.Web.UI.Page
         reject.ID = "r-" + b.bookingId;
         reject.CssClass = "btn btn-danger";
         checkAvailabilityB.Text = "Check Availability Dates";
-        checkAvailabilityB.ID = "ca-" + b.property.propertyId;
+        checkAvailabilityB.ID = "ca" + b.startDate + b.endDate + "-" + b.property.propertyId;
         checkAvailabilityB.CssClass = "btn btn-default";
 
         accept.Click += new EventHandler(acceptBooking);
@@ -578,7 +578,6 @@ public partial class UserProfile : System.Web.UI.Page
         Button b = (Button)sender;
         String[] id = b.ID.Split('-');
         int conversationId = int.Parse(id[1]);
-        Session["conversationId"] = conversationId;
-        Response.Redirect("/DisplayMessages.aspx");
+        Response.Redirect("/DisplayMessages.aspx?conversationId=" + conversationId);
     }
 }
