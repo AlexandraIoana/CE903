@@ -112,20 +112,31 @@ public class MessageSystem
             SqlCommand command3 = new SqlCommand(query3, connection);
             command3.Parameters.AddWithValue("@host", host.loginName);
             command3.Parameters.AddWithValue("@user", user.loginName);
-            Object id3 = command3.ExecuteScalar();
+            int id3 = command3.ExecuteNonQuery();
             int conversation_id1;
-            if (id3 == null) {
+            if (id3 == 0) {
                 db.CloseConnection();
                 return false;
             }
             else
             {
-                conversation_id1 = (Int32)id3;
-                String query2 = "INSERT INTO Message (content, conversation_id, initiator) VALUES (@text, @id, @init); SELECT SCOPE_IDENTITY();";
+                String query4 = "SELECT id FROM Conversation WHERE host=@host AND loggedUser=@user";
+                SqlCommand command4 = new SqlCommand(query4, connection);
+                command4.Parameters.AddWithValue("@host", host.loginName);
+                command4.Parameters.AddWithValue("@user", user.loginName);
+                SqlDataReader reader4 = command4.ExecuteReader();
+                while (reader4.Read())
+                {
+                    conversation_id = reader4.GetInt32(0);
+                }
+                db.CloseConnection();
+                db.OpenConnection();
+                String query2 = "INSERT INTO Message (content, conversation_id, initiator, message_read) VALUES (@text, @id, @init, @read); SELECT SCOPE_IDENTITY();";
                 SqlCommand command2 = new SqlCommand(query2, connection);
                 command2.Parameters.AddWithValue("@text", message);
-                command2.Parameters.AddWithValue("@id", conversation_id1);
+                command2.Parameters.AddWithValue("@id", conversation_id);
                 command2.Parameters.AddWithValue("@init", initiator);
+                command2.Parameters.AddWithValue("@read", 0);
                 Object id1 = command2.ExecuteScalar();
                 db.CloseConnection();
                 if (id1 == null)

@@ -178,8 +178,6 @@ public partial class SearchResult : System.Web.UI.Page
             Label propertyLocation = new Label();
             Label propertyPrice = new Label();
             HyperLink link = new HyperLink();
-            //Session["Property"] = property;
-            //Session["PropertyId"] = property.propertyId;
 
             divPhoto.Attributes.CssStyle.Add("width", "200");
             divPhoto.Attributes.CssStyle.Add("float", "left");

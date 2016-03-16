@@ -38,31 +38,38 @@ public partial class RequestBooking : System.Web.UI.Page
         {
             DateTime startDate = Convert.ToDateTime(startDateLab.Text);
             DateTime endDate = Convert.ToDateTime(endDateLab.Text);
-            Boolean isAvailable = Check_Availability(sender, e);
-            if (isAvailable)
+            if (startDate < DateTime.Now || endDate < DateTime.Now)
             {
-                Booking bookingReq = new Booking();
-                int propertyId = (int)Session["PropertyId"];
-                Property propertyret = Property.retrieveProperty(propertyId);
-                bookingReq.loggedUser = loggedUser;
-                bookingReq.property = propertyret;
-                bookingReq.startDate = startDateLab.Text;
-                bookingReq.endDate = endDateLab.Text;
-
-                property.propertyId = propertyId;
-                Session["BookingDetails"] = bookingReq;
-                Session["startDate"] = startDateLab.Text;
-                Session["endDate"] = endDateLab.Text;
-                Session["PropertyName"] = propertyret.name;
-                Session["PropertyPrice"] = "&pound; " + propertyret.price.ToString();
-                Session["loggedUser"] = loggedUser;
-                Response.Redirect("BookingReqConfirmation.aspx");
+                error_msg.Text = "Please enter dates that are in the future.";
             }
             else
             {
-                Availability.Text = "Property not availabe from " + startDateLab.Text + " to " + endDateLab.Text;
-                startDateLab.Text = "";
-                endDateLab.Text = "";
+                Boolean isAvailable = Check_Availability(sender, e);
+                if (isAvailable)
+                {
+                    Booking bookingReq = new Booking();
+                    int propertyId = (int)Session["PropertyId"];
+                    Property propertyret = Property.retrieveProperty(propertyId);
+                    bookingReq.loggedUser = loggedUser;
+                    bookingReq.property = propertyret;
+                    bookingReq.startDate = startDateLab.Text;
+                    bookingReq.endDate = endDateLab.Text;
+
+                    property.propertyId = propertyId;
+                    Session["BookingDetails"] = bookingReq;
+                    Session["startDate"] = startDateLab.Text;
+                    Session["endDate"] = endDateLab.Text;
+                    Session["PropertyName"] = propertyret.name;
+                    Session["PropertyPrice"] = "&pound; " + propertyret.price.ToString();
+                    Session["loggedUser"] = loggedUser;
+                    Response.Redirect("BookingReqConfirmation.aspx");
+                }
+                else
+                {
+                    Availability.Text = "Property not availabe from " + startDateLab.Text + " to " + endDateLab.Text;
+                    startDateLab.Text = "";
+                    endDateLab.Text = "";
+                }
             }
         }
         catch (Exception)

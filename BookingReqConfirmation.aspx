@@ -1,9 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeFile="BookingReqConfirmation.aspx.cs" Inherits="BookingReqConfirmation" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="Server">
-    <div class="jumbotron">
-        <h1>Bed And Breakfast</h1>
-    </div>
     <h2>Please find your booking details
     </h2>
     <div class="row">
