@@ -76,11 +76,13 @@ public class Image
         {
             System.Diagnostics.Debug.Write(command.CommandText);
             command.ExecuteNonQuery();
+            db.CloseConnection();
             return true;
         }
         catch (Exception ex)
         {
             System.Diagnostics.Debug.Write(ex.Message);
+            db.CloseConnection();
             return false;
         }
     }
@@ -104,8 +106,10 @@ public class Image
             bytesInBase64 = Convert.ToBase64String(bytes, 0, bytes.Length);
             user = reader.GetString(4);
             propertyId = reader.GetInt32(3);
+            db.CloseConnection();
             return true;
         }
+        db.CloseConnection();
         return false;
     }
 
@@ -130,6 +134,7 @@ public class Image
             String user = reader.GetString(4);
             images.Add(new Image(id, name, contentType, bytes, user, property));
         }
+        db.CloseConnection();
         return images;
     }
 }

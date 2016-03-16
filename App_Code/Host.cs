@@ -51,6 +51,7 @@ public class Host : User
         command.Parameters.AddWithValue("@login", loginName);
         command.Parameters.AddWithValue("@password", password);
         Object id = command.ExecuteScalar();
+        db.CloseConnection();
         if (id == null)
             return false;
         else
@@ -65,6 +66,7 @@ public class Host : User
         SqlCommand command = new SqlCommand(query, connection);
         command.Parameters.AddWithValue("@login", loginName);
         Object id = command.ExecuteScalar();
+        db.CloseConnection();
         if (id == null)
             return true;
         else
@@ -87,6 +89,7 @@ public class Host : User
         command.Parameters.AddWithValue("@password", password);
         command.Parameters.AddWithValue("@contactNumber", contactNumber);
         int row = command.ExecuteNonQuery();
+        db.CloseConnection();
         if (row == 0)
             return false;
         else
@@ -106,6 +109,7 @@ public class Host : User
         command.Parameters.AddWithValue("@price", property.price);
         command.Parameters.AddWithValue("@host", loginName);
         Object id = command.ExecuteScalar();
+        db.CloseConnection();
         if (id == null)
             return false;
         else
@@ -131,7 +135,7 @@ public class Host : User
             String contactNo = reader.GetString(4);
             result = new Host(1, loginName, name, email, password, contactNo);
         }
-        
+        db.CloseConnection();
         return result;
     }
 

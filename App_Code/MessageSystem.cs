@@ -46,7 +46,7 @@ public class MessageSystem
             array.Add(message); array.Add(initiator); array.Add(read); array.Add(id);
             conversation.Add(array);
         }
-
+        db.CloseConnection();
         return conversation;
     }
 
@@ -69,7 +69,7 @@ public class MessageSystem
             users.Add(h);
             users.Add(u);
         }
-
+        db.CloseConnection();
         return users;
     }
 
@@ -98,6 +98,7 @@ public class MessageSystem
             command1.Parameters.AddWithValue("@init", initiator);
             command1.Parameters.AddWithValue("@read", 0);
             Object id = command1.ExecuteScalar();
+            db.CloseConnection();
             if (id == null)
                 return false;
             else
@@ -113,8 +114,10 @@ public class MessageSystem
             command3.Parameters.AddWithValue("@user", user.loginName);
             Object id3 = command3.ExecuteScalar();
             int conversation_id1;
-            if (id3 == null)
+            if (id3 == null) {
+                db.CloseConnection();
                 return false;
+            }
             else
             {
                 conversation_id1 = (Int32)id3;
@@ -124,6 +127,7 @@ public class MessageSystem
                 command2.Parameters.AddWithValue("@id", conversation_id1);
                 command2.Parameters.AddWithValue("@init", initiator);
                 Object id1 = command2.ExecuteScalar();
+                db.CloseConnection();
                 if (id1 == null)
                     return false;
                 else
@@ -169,6 +173,7 @@ public class MessageSystem
             aux.Add(host);
             conversationIds.Add(aux);
         }
+        db.CloseConnection();
         return conversationIds;
     }
 
@@ -191,6 +196,7 @@ public class MessageSystem
             aux.Add(host);
             conversationIds.Add(aux);
         }
+        db.CloseConnection();
         return conversationIds;
     }
 
@@ -213,6 +219,7 @@ public class MessageSystem
             aux.Add(user);
             conversationIds.Add(aux);
         }
+        db.CloseConnection();
         return conversationIds;
     }
 
@@ -235,6 +242,7 @@ public class MessageSystem
             aux.Add(user);
             conversationIds.Add(aux);
         }
+        db.CloseConnection();
         return conversationIds;
     }
 

@@ -49,6 +49,7 @@ public class LoggedUser : User
         command.Parameters.AddWithValue("@login", loginName);
         command.Parameters.AddWithValue("@password", password);
         Object id = command.ExecuteScalar();
+        db.CloseConnection();
         if (id == null)
             return false;
         else
@@ -81,6 +82,7 @@ public class LoggedUser : User
         command.Parameters.AddWithValue("@email", email);
         command.Parameters.AddWithValue("@password", password);
         int row = command.ExecuteNonQuery();
+        db.CloseConnection();
         if (row == 0)
             return false;
         else
@@ -105,7 +107,7 @@ public class LoggedUser : User
             String password = reader.GetString(3);
             result = new LoggedUser(1, loginName, name, email, password);
         }
-
+        db.CloseConnection();
         return result;
     }
 

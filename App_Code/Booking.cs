@@ -71,6 +71,7 @@ public class Booking
             Property property = Property.retrieveProperty(propertyId);
             booking.Add(new Booking(id, loggedUser, property, start, end, status));
         }
+        db.CloseConnection();
         return booking;
     }
 
@@ -95,6 +96,7 @@ public class Booking
             Property property = Property.retrieveProperty(propertyId);
             booking.Add(new Booking(id, loggedUser, property, start, end, status));
         }
+        db.CloseConnection();
         return booking;
     }
 
@@ -119,6 +121,7 @@ public class Booking
             Property property = Property.retrieveProperty(propertyId);
             booking.Add(new Booking(id, loggedUser, property, start, end, status));
         }
+        db.CloseConnection();
         return booking;
     }
 
@@ -146,6 +149,7 @@ public class Booking
         command.Parameters.AddWithValue("@status", "REJECTED");
         command.Parameters.AddWithValue("@id", bookingId);
         int row = command.ExecuteNonQuery();
+        db.CloseConnection();
         if (row == 0)
             return false;
         else
@@ -166,6 +170,7 @@ public class Booking
         {
             visits = reader.GetInt32(0);
         }
+        db.CloseConnection();
         return visits;
     }
 
@@ -192,9 +197,11 @@ public class Booking
                 }
             }
         }
-        else{
+        else {
+            db.CloseConnection();
         	propDates = null;
         }
+        db.CloseConnection();
         return propDates;
     }
 
@@ -223,8 +230,10 @@ public class Booking
         }
         else
         {
+            db.CloseConnection();
             propDates = null;
         }
+        db.CloseConnection();
         return propDates;
     }
 
@@ -241,6 +250,7 @@ public class Booking
         {
             propCount = reader.GetInt32(0);
         }
+        db.CloseConnection();
         return propCount;
     }
 

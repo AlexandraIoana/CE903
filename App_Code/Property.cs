@@ -44,6 +44,7 @@ public class Property
         SqlCommand command = new SqlCommand(query, connection);
         command.Parameters.AddWithValue("@loginName", loginName);
         Object id = command.ExecuteScalar();
+        db.CloseConnection();
         if (id == null)
             return false;
         else
@@ -71,7 +72,7 @@ public class Property
             Property p = new Property(id, name, locat, noRooms, noGuests, price, null, host);
             property.Add(p);
         }
-
+        db.CloseConnection();
         return property;
     }
 
@@ -95,7 +96,7 @@ public class Property
             Host host = Host.retrieveHost(hostLoginName);
             property = new Property(id, name, locat, noRooms, noGuests, price, null, host);
         }
-
+        db.CloseConnection();
         return property;
     }
 
@@ -119,7 +120,7 @@ public class Property
             Host host = Host.retrieveHost(hostLoginName);
             property = new Property(id, name, locat, noRooms, noGuests, price, null, host);
         }
-
+        db.CloseConnection();
         return property;
     }
 
@@ -145,7 +146,7 @@ public class Property
             Host host = Host.retrieveHost(hostLoginName);
             properties.Add(new Property(id, name, locat, noRooms, noGuests, price, null, host));
         }
-
+        db.CloseConnection();
         return properties;
     }
 
@@ -170,7 +171,7 @@ public class Property
             Host host = Host.retrieveHost(hostLoginName);
             properties.Add(new Property(id, name, locat, noRooms, noGuests, price, null, host));
         }
-
+        db.CloseConnection();
         return properties;
     }
 
@@ -195,7 +196,7 @@ public class Property
             Host host = Host.retrieveHost(hostLoginName);
             properties.Add(new Property(id, name, locat, noRooms, nuGuests, price, null, host));
         }
-
+        db.CloseConnection();
         return properties;
     }
 
@@ -222,7 +223,7 @@ public class Property
             Host host = Host.retrieveHost(hostLoginName);
             properties.Add(new Property(id, name, locat, noRooms, nuGuests, price, null, host));
         }
-
+        db.CloseConnection();
         return properties;
     }
 
